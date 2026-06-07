@@ -1,0 +1,391 @@
+{
+  "locations": {
+    "london": {
+      "name": "London, United Kingdom",
+      "currency": "GBP",
+      "exchange_rate_usd": 0.79,
+      "income_tax_brackets": [
+        {
+          "min": 0,
+          "max": 12570,
+          "rate": 0.0,
+          "description": "Personal Allowance"
+        },
+        {
+          "min": 12570,
+          "max": 50270,
+          "rate": 0.20,
+          "description": "Basic Rate"
+        },
+        {
+          "min": 50270,
+          "max": 125140,
+          "rate": 0.40,
+          "description": "Higher Rate"
+        },
+        {
+          "min": 125140,
+          "max": null,
+          "rate": 0.45,
+          "description": "Additional Rate"
+        }
+      ],
+      "national_insurance_brackets": [
+        {
+          "min": 12570,
+          "max": 50270,
+          "rate": 0.08,
+          "description": "Employee NI (Basic)"
+        },
+        {
+          "min": 50270,
+          "max": null,
+          "rate": 0.02,
+          "description": "Employee NI (Higher)"
+        }
+      ],
+      "capital_gains_tax_rate": 0.20,
+      "capital_gains_allowance": 3000,
+      "dividend_tax_rate": 0.1125,
+      "dividend_allowance": 500,
+      "notes": "Tax year 2023/24. National Insurance is additional to income tax."
+    },
+    "new_york": {
+      "name": "New York, USA",
+      "currency": "USD",
+      "exchange_rate_usd": 1.0,
+      "federal_income_tax_brackets": [
+        {
+          "min": 0,
+          "max": 11000,
+          "rate": 0.10,
+          "description": "Single filer (2024)"
+        },
+        {
+          "min": 11000,
+          "max": 44725,
+          "rate": 0.12,
+          "description": "Single filer"
+        },
+        {
+          "min": 44725,
+          "max": 95375,
+          "rate": 0.22,
+          "description": "Single filer"
+        },
+        {
+          "min": 95375,
+          "max": 182100,
+          "rate": 0.24,
+          "description": "Single filer"
+        },
+        {
+          "min": 182100,
+          "max": 231250,
+          "rate": 0.32,
+          "description": "Single filer"
+        },
+        {
+          "min": 231250,
+          "max": 578125,
+          "rate": 0.35,
+          "description": "Single filer"
+        },
+        {
+          "min": 578125,
+          "max": null,
+          "rate": 0.37,
+          "description": "Single filer"
+        }
+      ],
+      "state_income_tax_brackets": [
+        {
+          "min": 0,
+          "max": 8500,
+          "rate": 0.04,
+          "description": "NY State (2024)"
+        },
+        {
+          "min": 8500,
+          "max": 11700,
+          "rate": 0.045,
+          "description": "NY State"
+        },
+        {
+          "min": 11700,
+          "max": 13900,
+          "rate": 0.05,
+          "description": "NY State"
+        },
+        {
+          "min": 13900,
+          "max": 21400,
+          "rate": 0.055,
+          "description": "NY State"
+        },
+        {
+          "min": 21400,
+          "max": 80650,
+          "rate": 0.06,
+          "description": "NY State"
+        },
+        {
+          "min": 80650,
+          "max": 215400,
+          "rate": 0.0685,
+          "description": "NY State"
+        },
+        {
+          "min": 215400,
+          "max": 1077550,
+          "rate": 0.0965,
+          "description": "NY State"
+        },
+        {
+          "min": 1077550,
+          "max": 5000000,
+          "rate": 0.103,
+          "description": "NY State"
+        },
+        {
+          "min": 5000000,
+          "max": null,
+          "rate": 0.109,
+          "description": "NY State (top rate)"
+        }
+      ],
+      "city_tax": 0.03876,
+      "capital_gains_tax_rate": 0.20,
+      "long_term_capital_gains_rate": 0.15,
+      "capital_gains_tax_note": "Federal rate applies to investment income",
+      "notes": "Federal + NY State + NYC tax. Additional 3.876% NYC tax on income. Social Security/Medicare (7.65%) also applies."
+    },
+    "hong_kong": {
+      "name": "Hong Kong, China (SAR)",
+      "currency": "HKD",
+      "exchange_rate_usd": 7.8,
+      "income_tax_brackets": [
+        {
+          "min": 0,
+          "max": 150000,
+          "rate": 0.02,
+          "description": "2024/25 tax year"
+        },
+        {
+          "min": 150000,
+          "max": 310000,
+          "rate": 0.06,
+          "description": "2024/25 tax year"
+        },
+        {
+          "min": 310000,
+          "max": 470000,
+          "rate": 0.10,
+          "description": "2024/25 tax year"
+        },
+        {
+          "min": 470000,
+          "max": 630000,
+          "rate": 0.14,
+          "description": "2024/25 tax year"
+        },
+        {
+          "min": 630000,
+          "max": null,
+          "rate": 0.17,
+          "description": "2024/25 tax year (top rate)"
+        }
+      ],
+      "capital_gains_tax_rate": 0.0,
+      "dividend_tax_rate": 0.0,
+      "notes": "Hong Kong has NO capital gains tax. Foreign-sourced income is generally not taxed. Very favorable tax environment."
+    },
+    "chicago": {
+      "name": "Chicago, USA",
+      "currency": "USD",
+      "exchange_rate_usd": 1.0,
+      "federal_income_tax_brackets": [
+        {
+          "min": 0,
+          "max": 11000,
+          "rate": 0.10,
+          "description": "Single filer (2024)"
+        },
+        {
+          "min": 11000,
+          "max": 44725,
+          "rate": 0.12,
+          "description": "Single filer"
+        },
+        {
+          "min": 44725,
+          "max": 95375,
+          "rate": 0.22,
+          "description": "Single filer"
+        },
+        {
+          "min": 95375,
+          "max": 182100,
+          "rate": 0.24,
+          "description": "Single filer"
+        },
+        {
+          "min": 182100,
+          "max": 231250,
+          "rate": 0.32,
+          "description": "Single filer"
+        },
+        {
+          "min": 231250,
+          "max": 578125,
+          "rate": 0.35,
+          "description": "Single filer"
+        },
+        {
+          "min": 578125,
+          "max": null,
+          "rate": 0.37,
+          "description": "Single filer"
+        }
+      ],
+      "state_income_tax_rate": 0.0495,
+      "city_tax": 0.038,
+      "capital_gains_tax_rate": 0.20,
+      "long_term_capital_gains_rate": 0.15,
+      "notes": "Federal + Illinois State (flat 4.95%) + Chicago tax (3.8%). Social Security/Medicare (7.65%) also applies."
+    },
+    "dubai": {
+      "name": "Dubai, United Arab Emirates",
+      "currency": "AED",
+      "exchange_rate_usd": 3.67,
+      "income_tax_rate": 0.0,
+      "capital_gains_tax_rate": 0.0,
+      "dividend_tax_rate": 0.0,
+      "notes": "NO income tax. NO capital gains tax. NO corporate tax. Tax-free jurisdiction. No social security contributions required from private sector employees."
+    },
+    "zurich": {
+      "name": "Zurich, Switzerland",
+      "currency": "CHF",
+      "exchange_rate_usd": 0.92,
+      "federal_income_tax_brackets": [
+        {
+          "min": 0,
+          "max": 15100,
+          "rate": 0.01,
+          "description": "Federal 2024"
+        },
+        {
+          "min": 15100,
+          "max": 30200,
+          "rate": 0.02,
+          "description": "Federal"
+        },
+        {
+          "min": 30200,
+          "max": 42900,
+          "rate": 0.025,
+          "description": "Federal"
+        },
+        {
+          "min": 42900,
+          "max": 52200,
+          "rate": 0.035,
+          "description": "Federal"
+        },
+        {
+          "min": 52200,
+          "max": 60900,
+          "rate": 0.04,
+          "description": "Federal"
+        },
+        {
+          "min": 60900,
+          "max": 70700,
+          "rate": 0.05,
+          "description": "Federal"
+        },
+        {
+          "min": 70700,
+          "max": 82000,
+          "rate": 0.054,
+          "description": "Federal"
+        },
+        {
+          "min": 82000,
+          "max": 110200,
+          "rate": 0.066,
+          "description": "Federal"
+        },
+        {
+          "min": 110200,
+          "max": null,
+          "rate": 0.132,
+          "description": "Federal (top rate)"
+        }
+      ],
+      "canton_tax_estimate": 0.22,
+      "capital_gains_tax_rate": 0.0,
+      "notes": "Federal rate shown. Cantons (Zurich estimates ~22% total including canton tax). Capital gains are generally not taxed in Switzerland if held long-term. Employee contribution to AHV/ALV ~8.7%."
+    },
+    "tokyo": {
+      "name": "Tokyo, Japan",
+      "currency": "JPY",
+      "exchange_rate_usd": 150.0,
+      "income_tax_brackets": [
+        {
+          "min": 0,
+          "max": 1950000,
+          "rate": 0.05,
+          "description": "2024 tax year"
+        },
+        {
+          "min": 1950000,
+          "max": 3300000,
+          "rate": 0.10,
+          "description": "2024 tax year"
+        },
+        {
+          "min": 3300000,
+          "max": 6950000,
+          "rate": 0.20,
+          "description": "2024 tax year"
+        },
+        {
+          "min": 6950000,
+          "max": 9000000,
+          "rate": 0.23,
+          "description": "2024 tax year"
+        },
+        {
+          "min": 9000000,
+          "max": 18000000,
+          "rate": 0.33,
+          "description": "2024 tax year"
+        },
+        {
+          "min": 18000000,
+          "max": 40000000,
+          "rate": 0.40,
+          "description": "2024 tax year"
+        },
+        {
+          "min": 40000000,
+          "max": null,
+          "rate": 0.45,
+          "description": "2024 tax year (top rate)"
+        }
+      ],
+      "local_inhabitant_tax": 0.05,
+      "social_insurance_rate": 0.197,
+      "capital_gains_tax_rate": 0.20,
+      "notes": "National tax + local inhabitant tax (~5%) + social insurance (~19.7%). Short-term capital gains taxed as ordinary income, long-term at 20%."
+    }
+  },
+  "notes": {
+    "general": "Tax data is current as of 2024-2025. Rates may change. This is for informational purposes only.",
+    "effective_rates": "Effective tax rates should be calculated based on income brackets, not just top marginal rates.",
+    "capital_gains": "Capital gains treatment varies significantly by jurisdiction. Some countries have 0% rate, others tax as ordinary income.",
+    "social_contributions": "Many countries include mandatory social security/insurance contributions - these are in addition to income tax.",
+    "currency_note": "Amounts shown in local currency. Exchange rates will apply for comparison."
+  }
+}

@@ -1,0 +1,263 @@
+{
+  "locations": {
+    "london": {
+      "name": "London, United Kingdom",
+      "currency": "GBP",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, public transport, shared accommodation, budget dining",
+          "monthly_usd": 2200,
+          "annual_usd": 26400,
+          "housing_percent": 0.40,
+          "food_percent": 0.15,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.08,
+          "other_percent": 0.27
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, private flat, mixed dining, leisure activities",
+          "monthly_usd": 4500,
+          "annual_usd": 54000,
+          "housing_percent": 0.35,
+          "food_percent": 0.12,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.08,
+          "other_percent": 0.37
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas, fine dining, extensive leisure",
+          "monthly_usd": 8500,
+          "annual_usd": 102000,
+          "housing_percent": 0.40,
+          "food_percent": 0.15,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.35
+        }
+      }
+    },
+    "new_york": {
+      "name": "New York, USA",
+      "currency": "USD",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, outer boroughs, public transit, budget dining",
+          "monthly_usd": 2500,
+          "annual_usd": 30000,
+          "housing_percent": 0.40,
+          "food_percent": 0.14,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.08,
+          "other_percent": 0.30
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, Manhattan/Brooklyn, mixed dining, entertainment",
+          "monthly_usd": 5500,
+          "annual_usd": 66000,
+          "housing_percent": 0.35,
+          "food_percent": 0.12,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.07,
+          "other_percent": 0.38
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium neighborhoods, fine dining, exclusive venues",
+          "monthly_usd": 10000,
+          "annual_usd": 120000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.38
+        }
+      }
+    },
+    "hong_kong": {
+      "name": "Hong Kong, China (SAR)",
+      "currency": "HKD",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, shared apartment, local dining, public transport",
+          "monthly_usd": 1800,
+          "annual_usd": 21600,
+          "housing_percent": 0.45,
+          "food_percent": 0.15,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.07,
+          "other_percent": 0.25
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, private flat, mixed dining, local entertainment",
+          "monthly_usd": 4000,
+          "annual_usd": 48000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.08,
+          "other_percent": 0.32
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium area flat, fine dining, exclusive activities",
+          "monthly_usd": 8000,
+          "annual_usd": 96000,
+          "housing_percent": 0.45,
+          "food_percent": 0.12,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.33
+        }
+      }
+    },
+    "chicago": {
+      "name": "Chicago, USA",
+      "currency": "USD",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, suburban areas, public transit, budget dining",
+          "monthly_usd": 2000,
+          "annual_usd": 24000,
+          "housing_percent": 0.38,
+          "food_percent": 0.15,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.10,
+          "other_percent": 0.27
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, good neighborhoods, varied dining, entertainment",
+          "monthly_usd": 4200,
+          "annual_usd": 50400,
+          "housing_percent": 0.35,
+          "food_percent": 0.12,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.08,
+          "other_percent": 0.37
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas, fine dining, extensive activities",
+          "monthly_usd": 7500,
+          "annual_usd": 90000,
+          "housing_percent": 0.38,
+          "food_percent": 0.12,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.40
+        }
+      }
+    },
+    "dubai": {
+      "name": "Dubai, United Arab Emirates",
+      "currency": "AED",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, shared villa/apt, local dining, public transport",
+          "monthly_usd": 1500,
+          "annual_usd": 18000,
+          "housing_percent": 0.45,
+          "food_percent": 0.15,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.12,
+          "other_percent": 0.20
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, private apartment, mixed dining, leisure",
+          "monthly_usd": 3500,
+          "annual_usd": 42000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.10,
+          "other_percent": 0.30
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium villa/apt, fine dining, exclusive venues",
+          "monthly_usd": 7000,
+          "annual_usd": 84000,
+          "housing_percent": 0.45,
+          "food_percent": 0.12,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.08,
+          "other_percent": 0.30
+        }
+      }
+    },
+    "zurich": {
+      "name": "Zurich, Switzerland",
+      "currency": "CHF",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, suburban areas, shared transport, budget dining",
+          "monthly_usd": 2800,
+          "annual_usd": 33600,
+          "housing_percent": 0.38,
+          "food_percent": 0.15,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.10,
+          "other_percent": 0.27
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, good areas, private transport, varied dining",
+          "monthly_usd": 6000,
+          "annual_usd": 72000,
+          "housing_percent": 0.35,
+          "food_percent": 0.12,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.08,
+          "other_percent": 0.37
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas, private car, fine dining",
+          "monthly_usd": 11000,
+          "annual_usd": 132000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.38
+        }
+      }
+    },
+    "tokyo": {
+      "name": "Tokyo, Japan",
+      "currency": "JPY",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, shared apartment, local dining, public transit",
+          "monthly_usd": 1600,
+          "annual_usd": 19200,
+          "housing_percent": 0.38,
+          "food_percent": 0.18,
+          "transport_percent": 0.12,
+          "utilities_percent": 0.08,
+          "other_percent": 0.24
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, private apartment, varied dining, entertainment",
+          "monthly_usd": 3500,
+          "annual_usd": 42000,
+          "housing_percent": 0.35,
+          "food_percent": 0.14,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.08,
+          "other_percent": 0.33
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas, fine dining, exclusive activities",
+          "monthly_usd": 7000,
+          "annual_usd": 84000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.38
+        }
+      }
+    }
+  },
+  "notes": {
+    "general": "Cost of living estimates are based on 2024-2025 data and converted to USD for comparison.",
+    "brackets": "Low = modest but comfortable; Medium = professional/comfortable; High = luxury lifestyle",
+    "variations": "Actual costs vary significantly based on specific neighborhood, lifestyle choices, and personal spending habits.",
+    "percentages": "Breakdown percentages show approximate allocation of spending across categories.",
+    "currency": "All amounts shown in USD for easy comparison. Multiply by local exchange rate for actual costs."
+  }
+}
