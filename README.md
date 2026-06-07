@@ -22,6 +22,10 @@ This project helps expats and remote workers calculate and compare:
 - **Zurich, Switzerland** - Low federal tax with canton-based variations
 - **Tokyo, Japan** - Progressive tax system with local inhabitant tax
 
+## Supported Currencies
+- **USD**
+- **GBP**
+
 ## Project Structure
 
 ```
@@ -54,7 +58,26 @@ Breakdown includes: housing, food, transport, utilities, and other expenses
 
 ## Usage
 
-### Basic Usage
+### Run From Terminal
+
+Input desired values to the following variables in `script.py`
+
+```python
+ANNUAL_INCOME = 120_000
+ANNUAL_INCOME_CURRENCY = "GBP"
+LOCATION = "london"
+LIFESTYLE = "medium"
+```
+
+Then run the script and view the output in the terminal:
+
+```bash
+python -m src.script
+```
+
+### Run in Python
+
+#### Basic Usage
 
 ```python
 from script import TaxCalculator, print_tax_result
@@ -70,7 +93,7 @@ col = calc.get_cost_of_living("london", "medium")
 print_tax_result(result, col)
 ```
 
-### Get Available Locations
+#### Get Available Locations
 
 ```python
 locations = calc.get_available_locations()
@@ -78,7 +101,7 @@ print(locations)
 # Output: ['london', 'new_york', 'hong_kong', 'chicago', 'dubai', 'zurich', 'tokyo']
 ```
 
-### Compare All Locations
+#### Compare All Locations
 
 ```python
 comparison = calc.compare_locations(annual_income=100000, lifestyle="medium")
@@ -86,14 +109,14 @@ for location, data in comparison.items():
     print(f"{location}: ${data['tax_result'].take_home_pay:,.0f}")
 ```
 
-### Get Capital Gains Tax Rate
+#### Get Capital Gains Tax Rate
 
 ```python
 rate, notes = calc.get_capital_gains_tax_rate("london")
 print(f"Capital gains tax: {rate*100}%")
 ```
 
-### Get Cost of Living Breakdown
+#### Get Cost of Living Breakdown
 
 ```python
 col = calc.get_cost_of_living("hong_kong", "high")
@@ -115,8 +138,6 @@ For a $100,000 annual income with medium lifestyle:
 | New York | $72,837 | $66,000 | $6,837 |
 | Tokyo | $70,300 | $42,000 | $28,300 |
 | London | $68,557 | $54,000 | $14,557 |
-
-**Note:** This comparison assumes income is in each location's currency. A real-world comparison should apply exchange rates.
 
 ## Tax System Details
 
@@ -198,28 +219,12 @@ class CostOfLivingBreakdown:
     other: float
 ```
 
-## Future Enhancements
-
-Potential improvements for this project:
-
-1. **Currency Conversion**: Add real-time exchange rate API for accurate comparisons
-2. **Additional Locations**: Extend to more cities (Singapore, Toronto, Sydney, etc.)
-3. **Web Interface**: Flask/Django web app for easy visualization
-4. **Scenario Analysis**: Multiple income streams, business income, investments
-5. **Visa/Residency**: Add requirements and costs for different visa categories
-6. **Lifestyle Customization**: Allow users to define custom spending profiles
-7. **Tax Planning**: Optimization recommendations based on income structure
-8. **Historical Tracking**: Monitor tax rate changes over time
-9. **Investment Analysis**: Detailed capital gains planning for different scenarios
-10. **Retirement Planning**: Long-term projections based on different locations
-
 ## Data Sources & Notes
 
 - Tax rates based on 2024-2025 information
-- Cost of living estimates converted to USD for comparison
 - Rates may change - verify with official tax authorities before making decisions
 - This is informational only - consult with tax professionals for actual tax planning
-- Currency exchange rates not included - multiply by current rates for real comparisons
+- Currency exchange rates are as of last commit date
 
 ## License
 
