@@ -62,6 +62,23 @@ Breakdown includes: housing, food, transport, utilities, and other expenses
 
 ## Usage
 
+### Run the Web UI (Streamlit)
+
+Install dependencies and launch the interactive web app:
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+The app opens at `http://localhost:8501` and provides:
+- **Overview tab** — sortable comparison table for all locations + bar charts
+- **Location Detail tab** — full tax and cost-of-living breakdown for a selected city
+
+Adjust income, currency, and lifestyle in the sidebar; the UI updates instantly.
+
+---
+
 ### Run From Terminal
 
 Input desired values to the following variables in `script.py`
@@ -229,6 +246,7 @@ class TaxResult:
     gross_income: float
     location: str
     currency: str
+    exchange_rate_usd: float
     total_tax: float
     income_tax: float
     social_contributions: float
