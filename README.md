@@ -77,6 +77,17 @@ The app opens at `http://localhost:8501` and provides:
 
 Adjust income, currency, and lifestyle in the sidebar; the UI updates instantly.
 
+<br>
+
+![Overview table and charts](img/1.1.PNG)
+<br>
+
+![Annual surplus chart](img/1.2.PNG)
+<br>
+
+![Location detail breakdown](img/1.3.PNG)
+<br>
+
 ---
 
 ### Run From Terminal
