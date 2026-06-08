@@ -379,6 +379,76 @@
       "social_insurance_rate": 0.197,
       "capital_gains_tax_rate": 0.20,
       "notes": "National tax + local inhabitant tax (~5%) + social insurance (~19.7%). Short-term capital gains taxed as ordinary income, long-term at 20%."
+    },
+    "singapore": {
+      "name": "Singapore",
+      "currency": "SGD",
+      "exchange_rate_usd": 1.35,
+      "income_tax_brackets": [
+        {"min": 0, "max": 20000, "rate": 0.0, "description": "2024 resident tax"},
+        {"min": 20000, "max": 30000, "rate": 0.02, "description": "2024 resident tax"},
+        {"min": 30000, "max": 40000, "rate": 0.035, "description": "2024 resident tax"},
+        {"min": 40000, "max": 80000, "rate": 0.07, "description": "2024 resident tax"},
+        {"min": 80000, "max": 120000, "rate": 0.115, "description": "2024 resident tax"},
+        {"min": 120000, "max": 160000, "rate": 0.15, "description": "2024 resident tax"},
+        {"min": 160000, "max": 200000, "rate": 0.18, "description": "2024 resident tax"},
+        {"min": 200000, "max": 240000, "rate": 0.19, "description": "2024 resident tax"},
+        {"min": 240000, "max": 280000, "rate": 0.195, "description": "2024 resident tax"},
+        {"min": 280000, "max": 320000, "rate": 0.20, "description": "2024 resident tax"},
+        {"min": 320000, "max": null, "rate": 0.22, "description": "2024 resident tax (top rate)"}
+      ],
+      "social_insurance_rate": 0.20,
+      "capital_gains_tax_rate": 0.0,
+      "dividend_tax_rate": 0.0,
+      "notes": "2024 resident tax rates. CPF employee contribution is 20% on earnings up to SGD 102,000/year (this calculator applies it to full income, overestimating for high earners). No capital gains tax. No dividend tax for residents."
+    },
+    "toronto": {
+      "name": "Toronto, Canada",
+      "currency": "CAD",
+      "exchange_rate_usd": 1.37,
+      "federal_income_tax_brackets": [
+        {"min": 0, "max": 55867, "rate": 0.15, "description": "Federal 2024"},
+        {"min": 55867, "max": 111733, "rate": 0.205, "description": "Federal 2024"},
+        {"min": 111733, "max": 154906, "rate": 0.26, "description": "Federal 2024"},
+        {"min": 154906, "max": 220000, "rate": 0.29, "description": "Federal 2024"},
+        {"min": 220000, "max": null, "rate": 0.33, "description": "Federal 2024 (top rate)"}
+      ],
+      "state_income_tax_brackets": [
+        {"min": 0, "max": 51446, "rate": 0.0505, "description": "Ontario provincial 2024"},
+        {"min": 51446, "max": 102894, "rate": 0.0915, "description": "Ontario provincial"},
+        {"min": 102894, "max": 150000, "rate": 0.1116, "description": "Ontario provincial"},
+        {"min": 150000, "max": 220000, "rate": 0.1216, "description": "Ontario provincial"},
+        {"min": 220000, "max": null, "rate": 0.1316, "description": "Ontario provincial (top rate)"}
+      ],
+      "social_insurance_rate": 0.05,
+      "capital_gains_tax_rate": 0.25,
+      "notes": "Federal + Ontario provincial tax. CPP (5.95%) + EI (1.66%) are heavily capped (~CAD 5,000/year max); a 5% approximation is used which overestimates for high earners. Capital gains: 50% inclusion rate at marginal rate; ~25% effective rate used as approximation."
+    },
+    "sydney": {
+      "name": "Sydney, Australia",
+      "currency": "AUD",
+      "exchange_rate_usd": 1.54,
+      "income_tax_brackets": [
+        {"min": 0, "max": 18200, "rate": 0.0, "description": "2024-25 tax year"},
+        {"min": 18200, "max": 45000, "rate": 0.19, "description": "2024-25 after Stage 3 cuts"},
+        {"min": 45000, "max": 135000, "rate": 0.325, "description": "2024-25"},
+        {"min": 135000, "max": 190000, "rate": 0.37, "description": "2024-25"},
+        {"min": 190000, "max": null, "rate": 0.45, "description": "2024-25 (top rate)"}
+      ],
+      "local_inhabitant_tax": 0.02,
+      "capital_gains_tax_rate": 0.20,
+      "notes": "2024-25 federal tax after Stage 3 cuts. Medicare Levy (2%) applied as flat rate. Employer superannuation (11.5%) is paid on top of gross salary and does not reduce take-home pay. Capital gains: 50% discount for assets held >12 months; approx 20% effective rate used."
+    },
+    "amsterdam": {
+      "name": "Amsterdam, Netherlands",
+      "currency": "EUR",
+      "exchange_rate_usd": 0.92,
+      "income_tax_brackets": [
+        {"min": 0, "max": 75518, "rate": 0.3697, "description": "Box 1 (2024), includes national insurance contributions"},
+        {"min": 75518, "max": null, "rate": 0.495, "description": "Box 1 (2024) top rate"}
+      ],
+      "capital_gains_tax_rate": 0.32,
+      "notes": "Box 1 income from employment. Lower rate (36.97%) includes national insurance (AOW/ANW/WLZ). General and employment tax credits are not modeled here, so effective rates shown are slightly higher than actual. Box 3 (investment assets) uses a deemed return taxed at approx 32% effective rate."
     }
   },
   "notes": {

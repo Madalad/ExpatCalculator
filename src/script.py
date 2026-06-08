@@ -22,8 +22,8 @@ from dataclasses import dataclass
 #   - "medium": Professional lifestyle (private housing, varied dining, entertainment)
 #   - "high":   Luxury lifestyle (premium areas, fine dining, exclusive activities)
 
-ANNUAL_INCOME = 120_000
-ANNUAL_INCOME_CURRENCY = "GBP"
+ANNUAL_INCOME = 100_000
+ANNUAL_INCOME_CURRENCY = "USD"
 LOCATION = "london"
 LIFESTYLE = "medium"
 
@@ -43,6 +43,7 @@ class TaxResult:
     gross_income: float
     location: str
     currency: str
+    exchange_rate_usd: float
     total_tax: float
     income_tax: float
     social_contributions: float
@@ -150,12 +151,13 @@ class TaxCalculator:
                 gross_income=annual_income_local,
                 location=location,
                 currency=currency,
+                exchange_rate_usd=exchange_rate,
                 total_tax=0,
                 income_tax=0,
                 social_contributions=0,
                 effective_tax_rate=0,
                 take_home_pay=annual_income_local
-            )  # Note: gross_income and take_home_pay are in local currency
+            )
         
         # Federal/National tax (handles both US federal and other national taxes)
         if "federal_income_tax_brackets" in loc_data:
@@ -216,6 +218,7 @@ class TaxCalculator:
             gross_income=annual_income_local,
             location=location,
             currency=currency,
+            exchange_rate_usd=exchange_rate,
             total_tax=total_tax,
             income_tax=income_tax,
             social_contributions=social_contributions,
@@ -311,16 +314,26 @@ class TaxCalculator:
 
 def print_tax_result(result: TaxResult, col_result: CostOfLivingBreakdown = None, input_currency: str = "USD"):
     """Pretty print tax calculation result."""
+    # Convert all monetary values from local currency to input currency
+    input_to_usd = TaxCalculator.INPUT_CURRENCY_TO_USD[input_currency]
+    to_input = 1 / (result.exchange_rate_usd * input_to_usd)
+
+    gross       = result.gross_income        * to_input
+    income_tax  = result.income_tax          * to_input
+    social      = result.social_contributions * to_input
+    total_tax   = result.total_tax           * to_input
+    take_home   = result.take_home_pay       * to_input
+
     print(f"\n{'='*60}")
     print(f"Tax Calculation: {result.location}")
     print(f"{'='*60}")
-    print(f"Gross Annual Income:        {result.gross_income:>12,.2f} {result.currency}")
-    print(f"Income Tax:                 {result.income_tax:>12,.2f} {result.currency}")
-    print(f"Social Contributions:       {result.social_contributions:>12,.2f} {result.currency}")
-    print(f"Total Tax:                  {result.total_tax:>12,.2f} {result.currency}")
+    print(f"Gross Annual Income:        {gross:>12,.2f} {input_currency}")
+    print(f"Income Tax:                 {income_tax:>12,.2f} {input_currency}")
+    print(f"Social Contributions:       {social:>12,.2f} {input_currency}")
+    print(f"Total Tax:                  {total_tax:>12,.2f} {input_currency}")
     print(f"Effective Tax Rate:         {result.effective_tax_rate*100:>12.2f}%")
-    print(f"Take-Home Pay (Annual):     {result.take_home_pay:>12,.2f} {result.currency}")
-    print(f"Take-Home Pay (Monthly):    {result.take_home_pay/12:>12,.2f} {result.currency}")
+    print(f"Take-Home Pay (Annual):     {take_home:>12,.2f} {input_currency}")
+    print(f"Take-Home Pay (Monthly):    {take_home/12:>12,.2f} {input_currency}")
     
     if col_result:
         # Convert COL values to input currency
@@ -336,14 +349,16 @@ def print_tax_result(result: TaxResult, col_result: CostOfLivingBreakdown = None
         # Get currency symbol
         currency_symbol = "$" if input_currency == "USD" else "£"
         
-        print(f"\n{'Cost of Living Breakdown':^60}")
-        print(f"  Housing:                {currency_symbol}{housing_input:>11,.2f}")
-        print(f"  Food:                   {currency_symbol}{food_input:>11,.2f}")
-        print(f"  Transport:              {currency_symbol}{transport_input:>11,.2f}")
-        print(f"  Utilities:              {currency_symbol}{utilities_input:>11,.2f}")
-        print(f"  Other:                  {currency_symbol}{other_input:>11,.2f}")
-        print(f"  Total (Annual):         {currency_symbol}{annual_input:>11,.2f}")
-        print(f"  Total (Monthly):        {currency_symbol}{monthly_input:>11,.2f}")
+        s = currency_symbol
+        print(f"\n{'Cost of Living Breakdown':^78}")
+        print(f"  {'':20} {'Annual':>15} {'Monthly':>15}")
+        print(f"  {'Housing':<20} {s}{housing_input:>14,.2f} {s}{housing_input/12:>14,.2f}")
+        print(f"  {'Food':<20} {s}{food_input:>14,.2f} {s}{food_input/12:>14,.2f}")
+        print(f"  {'Transport':<20} {s}{transport_input:>14,.2f} {s}{transport_input/12:>14,.2f}")
+        print(f"  {'Utilities':<20} {s}{utilities_input:>14,.2f} {s}{utilities_input/12:>14,.2f}")
+        print(f"  {'Other':<20} {s}{other_input:>14,.2f} {s}{other_input/12:>14,.2f}")
+        print(f"  {'-'*46}")
+        print(f"  {'Total':<20} {s}{annual_input:>14,.2f} {s}{monthly_input:>14,.2f}")
 
 def main():
     calculator = TaxCalculator()
@@ -373,7 +388,7 @@ def main():
     currency_symbol = "$" if ANNUAL_INCOME_CURRENCY == "USD" else "£"
     
     # Print comparison table with organized columns (annual/monthly pairs together)
-    print(f"\n{'Location':<22} {'Take-Home Pay':<23} {'Cost of Living':<30} Surplus")
+    print(f"\n{'Location':<22} {'Take-Home Pay':<23} {'Cost of Living':<29} Surplus")
     print(f"{'':11} {'Annual':>13} {'Monthly':>13} {'Annual':>11} {'Monthly':>11} {'Annual':>13} {'Monthly':>13} {'Eff. Tax Rate':>17} {'CG Tax Rate':>14}")
     print("-"*138)
     for loc, data in sorted_comparison:

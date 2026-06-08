@@ -21,6 +21,10 @@ This project helps expats and remote workers calculate and compare:
 - **Dubai, UAE** - No income tax jurisdiction
 - **Zurich, Switzerland** - Low federal tax with canton-based variations
 - **Tokyo, Japan** - Progressive tax system with local inhabitant tax
+- **Singapore** - Low progressive tax with CPF social contributions, no capital gains tax
+- **Toronto, Canada** - Federal and Ontario provincial progressive tax
+- **Sydney, Australia** - Federal progressive tax with Medicare Levy, no separate state income tax
+- **Amsterdam, Netherlands** - Box 1 system with national insurance embedded in tax brackets
 
 ## Supported Currencies
 - **USD**
@@ -98,7 +102,7 @@ print_tax_result(result, col)
 ```python
 locations = calc.get_available_locations()
 print(locations)
-# Output: ['london', 'new_york', 'hong_kong', 'chicago', 'dubai', 'zurich', 'tokyo']
+# Output: ['london', 'new_york', 'hong_kong', 'chicago', 'dubai', 'zurich', 'tokyo', 'singapore', 'toronto', 'sydney', 'amsterdam']
 ```
 
 #### Compare All Locations
@@ -129,15 +133,19 @@ print(f"Food: ${col.food:,.0f}")
 
 For a $100,000 annual income with medium lifestyle:
 
-| Location | Take-Home | Cost of Living | Surplus |
-|----------|-----------|----------------|---------|
+| Location | Take-Home (USD) | Cost of Living (USD) | Surplus (USD) |
+|----------|-----------------|----------------------|---------------|
 | Dubai | $100,000 | $42,000 | $58,000 |
-| Hong Kong | $98,000 | $48,000 | $50,000 |
-| Zurich | $74,268 | $72,000 | $2,268 |
+| Hong Kong | $90,192 | $48,000 | $42,192 |
+| Zurich | $74,517 | $72,000 | $2,517 |
 | Chicago | $73,850 | $50,400 | $23,450 |
 | New York | $72,837 | $66,000 | $6,837 |
-| Tokyo | $70,300 | $42,000 | $28,300 |
-| London | $68,557 | $54,000 | $14,557 |
+| Singapore | $72,444 | $54,000 | $18,444 |
+| London | $71,364 | $54,000 | $17,364 |
+| Sydney | $71,135 | $54,000 | $17,135 |
+| Toronto | $67,618 | $45,600 | $22,018 |
+| Amsterdam | $60,785 | $50,400 | $10,385 |
+| Tokyo | $52,540 | $42,000 | $10,540 |
 
 ## Tax System Details
 
@@ -177,6 +185,30 @@ For a $100,000 annual income with medium lifestyle:
 - Local inhabitant tax: ~5%
 - Social insurance: ~19.7% (employee + employer)
 - Capital gains: 20% for long-term holdings
+
+### Singapore
+- Progressive tax: 0% → 22% (11 brackets, very low at low incomes)
+- CPF employee contribution: 20% (capped at SGD 102,000/year)
+- **No capital gains tax**
+- **No dividend tax** for residents
+
+### Canada (Toronto / Ontario)
+- Federal progressive tax: 15% → 33% (5 brackets)
+- Ontario provincial tax: 5.05% → 13.16% (5 brackets)
+- CPP + EI social contributions: heavily capped (~CAD 5,000/year max)
+- Capital gains: 50% inclusion rate (~25% effective rate approximation)
+
+### Australia (Sydney)
+- Federal progressive tax: 0% → 45% (5 brackets, post-Stage 3 cuts 2024-25)
+- Medicare Levy: 2% flat
+- Employer superannuation: 11.5% (paid on top of salary, does not reduce take-home)
+- Capital gains: 50% discount for assets held >12 months (~20% effective rate)
+
+### Netherlands (Amsterdam)
+- Box 1 (employment income): 36.97% → 49.5% (2 brackets)
+- Lower rate includes national insurance contributions (AOW/ANW/WLZ)
+- General and employment tax credits reduce actual liability (not modelled)
+- Box 3 (investment assets): deemed return system, ~32% effective rate
 
 ## Class Reference
 

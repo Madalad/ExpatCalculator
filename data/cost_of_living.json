@@ -251,6 +251,150 @@
           "other_percent": 0.38
         }
       }
+    },
+    "singapore": {
+      "name": "Singapore",
+      "currency": "SGD",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, HDB area, hawker centres, MRT transport",
+          "monthly_usd": 1900,
+          "annual_usd": 22800,
+          "housing_percent": 0.45,
+          "food_percent": 0.18,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.07,
+          "other_percent": 0.22
+        },
+        "medium": {
+          "description": "Expat standard, private condo, varied dining, leisure activities",
+          "monthly_usd": 4500,
+          "annual_usd": 54000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.07,
+          "utilities_percent": 0.07,
+          "other_percent": 0.34
+        },
+        "high": {
+          "description": "Luxury lifestyle, Orchard/Bukit Timah area, fine dining, exclusive clubs",
+          "monthly_usd": 9000,
+          "annual_usd": 108000,
+          "housing_percent": 0.45,
+          "food_percent": 0.12,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.33
+        }
+      }
+    },
+    "toronto": {
+      "name": "Toronto, Canada",
+      "currency": "CAD",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, suburban areas, shared accommodation, budget dining",
+          "monthly_usd": 2000,
+          "annual_usd": 24000,
+          "housing_percent": 0.38,
+          "food_percent": 0.16,
+          "transport_percent": 0.12,
+          "utilities_percent": 0.09,
+          "other_percent": 0.25
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, downtown condo, mixed dining, entertainment",
+          "monthly_usd": 3800,
+          "annual_usd": 45600,
+          "housing_percent": 0.35,
+          "food_percent": 0.13,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.08,
+          "other_percent": 0.34
+        },
+        "high": {
+          "description": "Luxury lifestyle, Yorkville/King West, fine dining, private transport",
+          "monthly_usd": 7000,
+          "annual_usd": 84000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.07,
+          "utilities_percent": 0.06,
+          "other_percent": 0.35
+        }
+      }
+    },
+    "sydney": {
+      "name": "Sydney, Australia",
+      "currency": "AUD",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, outer suburbs, public transport, local dining",
+          "monthly_usd": 2200,
+          "annual_usd": 26400,
+          "housing_percent": 0.40,
+          "food_percent": 0.16,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.09,
+          "other_percent": 0.25
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, inner suburbs, varied dining, weekend activities",
+          "monthly_usd": 4500,
+          "annual_usd": 54000,
+          "housing_percent": 0.35,
+          "food_percent": 0.12,
+          "transport_percent": 0.09,
+          "utilities_percent": 0.08,
+          "other_percent": 0.36
+        },
+        "high": {
+          "description": "Luxury lifestyle, Eastern Suburbs/North Shore, fine dining, harbour views",
+          "monthly_usd": 8000,
+          "annual_usd": 96000,
+          "housing_percent": 0.42,
+          "food_percent": 0.12,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.36
+        }
+      }
+    },
+    "amsterdam": {
+      "name": "Amsterdam, Netherlands",
+      "currency": "EUR",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, Amsterdam Noord or suburbs, cycling, budget dining",
+          "monthly_usd": 2200,
+          "annual_usd": 26400,
+          "housing_percent": 0.38,
+          "food_percent": 0.16,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.10,
+          "other_percent": 0.26
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, good neighbourhoods, varied dining, cycling/transit",
+          "monthly_usd": 4200,
+          "annual_usd": 50400,
+          "housing_percent": 0.33,
+          "food_percent": 0.13,
+          "transport_percent": 0.09,
+          "utilities_percent": 0.09,
+          "other_percent": 0.36
+        },
+        "high": {
+          "description": "Luxury lifestyle, canal belt or De Pijp, fine dining, private transport",
+          "monthly_usd": 7500,
+          "annual_usd": 90000,
+          "housing_percent": 0.38,
+          "food_percent": 0.12,
+          "transport_percent": 0.06,
+          "utilities_percent": 0.07,
+          "other_percent": 0.37
+        }
+      }
     }
   },
   "notes": {
