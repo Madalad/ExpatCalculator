@@ -285,7 +285,7 @@ class CostOfLivingBreakdown:
 - Tax rates based on 2024-2025 information
 - Rates may change - verify with official tax authorities before making decisions
 - This is informational only - consult with tax professionals for actual tax planning
-- Currency exchange rates are as of last commit date
+- Currency exchange rates fetched live at startup via [open.er-api.com](https://open.er-api.com); falls back to hardcoded rates if unreachable
 
 ## License
 
