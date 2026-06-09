@@ -449,6 +449,58 @@
       ],
       "capital_gains_tax_rate": 0.32,
       "notes": "Box 1 income from employment. Lower rate (36.97%) includes national insurance (AOW/ANW/WLZ). General and employment tax credits are not modeled here, so effective rates shown are slightly higher than actual. Box 3 (investment assets) uses a deemed return taxed at approx 32% effective rate."
+    },
+    "cape_town": {
+      "name": "Cape Town, South Africa",
+      "currency": "ZAR",
+      "exchange_rate_usd": 18.5,
+      "income_tax_brackets": [
+        {"min": 0, "max": 237100, "rate": 0.18, "description": "2024/25 tax year"},
+        {"min": 237100, "max": 370500, "rate": 0.26, "description": "2024/25 tax year"},
+        {"min": 370500, "max": 512800, "rate": 0.31, "description": "2024/25 tax year"},
+        {"min": 512800, "max": 673000, "rate": 0.36, "description": "2024/25 tax year"},
+        {"min": 673000, "max": 857900, "rate": 0.39, "description": "2024/25 tax year"},
+        {"min": 857900, "max": 1817000, "rate": 0.41, "description": "2024/25 tax year"},
+        {"min": 1817000, "max": null, "rate": 0.45, "description": "2024/25 tax year (top rate)"}
+      ],
+      "capital_gains_tax_rate": 0.18,
+      "notes": "2024/25 progressive income tax. Primary rebate of R17,235 not modelled (effective rates shown are slightly higher than actual). UIF employee contribution 1% capped at R17,712/year — negligible for high earners, not modelled. Capital gains: 40% inclusion rate at marginal rate; ~18% effective rate approximation."
+    },
+    "bern": {
+      "name": "Bern, Switzerland",
+      "currency": "CHF",
+      "exchange_rate_usd": 0.92,
+      "federal_income_tax_brackets": [
+        {"min": 0, "max": 15100, "rate": 0.01, "description": "Federal 2024"},
+        {"min": 15100, "max": 30200, "rate": 0.02, "description": "Federal"},
+        {"min": 30200, "max": 42900, "rate": 0.025, "description": "Federal"},
+        {"min": 42900, "max": 52200, "rate": 0.035, "description": "Federal"},
+        {"min": 52200, "max": 60900, "rate": 0.04, "description": "Federal"},
+        {"min": 60900, "max": 70700, "rate": 0.05, "description": "Federal"},
+        {"min": 70700, "max": 82000, "rate": 0.054, "description": "Federal"},
+        {"min": 82000, "max": 110200, "rate": 0.066, "description": "Federal"},
+        {"min": 110200, "max": null, "rate": 0.132, "description": "Federal (top rate)"}
+      ],
+      "canton_tax_estimate": 0.235,
+      "capital_gains_tax_rate": 0.0,
+      "notes": "Federal rates same as Zurich. Bern canton/commune combined rate ~23.5% (slightly higher than Zurich's ~22%). No capital gains tax for long-term holdings. Employee AHV/ALV social contributions ~8.7% (not modelled for consistency with Zurich entry)."
+    },
+    "bangkok": {
+      "name": "Bangkok, Thailand",
+      "currency": "THB",
+      "exchange_rate_usd": 35.0,
+      "income_tax_brackets": [
+        {"min": 0, "max": 150000, "rate": 0.0, "description": "2024 tax year"},
+        {"min": 150000, "max": 300000, "rate": 0.05, "description": "2024 tax year"},
+        {"min": 300000, "max": 500000, "rate": 0.10, "description": "2024 tax year"},
+        {"min": 500000, "max": 750000, "rate": 0.15, "description": "2024 tax year"},
+        {"min": 750000, "max": 1000000, "rate": 0.20, "description": "2024 tax year"},
+        {"min": 1000000, "max": 2000000, "rate": 0.25, "description": "2024 tax year"},
+        {"min": 2000000, "max": 5000000, "rate": 0.30, "description": "2024 tax year"},
+        {"min": 5000000, "max": null, "rate": 0.35, "description": "2024 tax year (top rate)"}
+      ],
+      "capital_gains_tax_rate": 0.0,
+      "notes": "Personal income tax 2024. Standard deductions (personal allowance B60,000, employment expense deduction up to B100,000) not modelled — effective rates shown are slightly higher than actual. Social Security Fund contribution 5% capped at B9,000/year — negligible for high earners, not modelled. No capital gains tax on Thai Stock Exchange; foreign-sourced capital gains complex but generally 0% for non-residents."
     }
   },
   "notes": {

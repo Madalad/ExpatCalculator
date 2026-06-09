@@ -25,6 +25,9 @@ This project helps expats and remote workers calculate and compare:
 - **Toronto, Canada** - Federal and Ontario provincial progressive tax
 - **Sydney, Australia** - Federal progressive tax with Medicare Levy, no separate state income tax
 - **Amsterdam, Netherlands** - Box 1 system with national insurance embedded in tax brackets
+- **Cape Town, South Africa** - Progressive tax with primary rebate system
+- **Bern, Switzerland** - Federal + Bern canton tax (slightly higher than Zurich)
+- **Bangkok, Thailand** - Low progressive tax, very affordable cost of living
 
 ## Supported Currencies
 - **USD**
@@ -237,6 +240,24 @@ For a $100,000 annual income with medium lifestyle:
 - Lower rate includes national insurance contributions (AOW/ANW/WLZ)
 - General and employment tax credits reduce actual liability (not modelled)
 - Box 3 (investment assets): deemed return system, ~32% effective rate
+
+### South Africa (Cape Town)
+- Progressive income tax: 18% → 26% → 31% → 36% → 39% → 41% → 45% (7 brackets)
+- Primary rebate of R17,235 reduces actual tax liability (not modelled — rates shown slightly high)
+- No modelled social contributions (UIF 1% capped at ~R17,712/year, negligible for high earners)
+- Capital gains: 40% inclusion rate at marginal rate (~18% effective rate)
+
+### Switzerland (Bern)
+- Same federal progressive tax as Zurich (1% → 13.2%)
+- Bern canton/commune combined rate ~23.5% (slightly higher than Zurich's ~22%)
+- **No capital gains tax** for long-term holdings
+- Employee social contributions ~8.7% (not modelled)
+
+### Thailand (Bangkok)
+- Progressive income tax: 0% → 5% → 10% → 15% → 20% → 25% → 30% → 35% (8 brackets)
+- Standard deductions (personal allowance, employment expense deduction) not modelled — rates shown slightly high
+- Social Security Fund 5% capped at B9,000/year — negligible for high earners, not modelled
+- **No capital gains tax** on Thai Stock Exchange; foreign-sourced gains generally 0% for non-residents
 
 ## Class Reference
 
