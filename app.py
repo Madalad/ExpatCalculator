@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-from src.script import TaxCalculator
+from src.script import TaxCalculator, project_investment
 
 st.set_page_config(page_title="ExpatCalculator", layout="wide")
 
 CURRENCY_SYMBOLS = {"USD": "$", "GBP": "£"}
+RISK_PROFILES = {"Conservative": 0.04, "Moderate": 0.07, "High Risk": 0.10}
 GREEN = "color: #2e7d32"
 RED   = "color: #c62828"
 
@@ -65,6 +66,7 @@ input_to_usd = TaxCalculator.INPUT_CURRENCY_TO_USD[currency]
 comparison = run_comparison(annual_income, currency, lifestyle)
 money_fmt  = lambda x: f"{sym}{x:,.0f}"
 abbrev_fmt = lambda x: f"{sym}{x/1000:.1f}k"
+wealth_fmt = lambda x: f"{sym}{x/1_000_000:.2f}M" if abs(x) >= 1_000_000 else f"{sym}{x/1000:.1f}k"
 
 # ── Comparison DataFrame ──────────────────────────────────────────────────────
 
@@ -98,7 +100,7 @@ st.markdown("<style>h3 { text-align: center; }</style>", unsafe_allow_html=True)
 st.title("ExpatCalculator")
 st.caption(f"Income: {sym}{annual_income:,} {currency} | Lifestyle: {lifestyle.capitalize()}")
 
-tab_overview, tab_detail = st.tabs(["Overview", "Location Detail"])
+tab_overview, tab_detail, tab_invest = st.tabs(["Overview", "Location Detail", "Investment"])
 
 # ── Overview ──────────────────────────────────────────────────────────────────
 
@@ -250,3 +252,94 @@ with tab_detail:
             use_container_width=True,
             hide_index=True,
         )
+
+# ── Investment ────────────────────────────────────────────────────────────────
+
+with tab_invest:
+    i1, i2, i3, i4 = st.columns(4)
+    with i1:
+        invest_display = st.selectbox(
+            "Select Location", list(loc_display_to_key.keys()), key="invest_loc"
+        )
+    with i2:
+        invest_pct = st.slider("Surplus Invested (%)", 0, 100, 50, step=5)
+    with i3:
+        risk = st.selectbox(
+            "Risk Profile", list(RISK_PROFILES.keys()), index=1,
+            format_func=lambda k: f"{k} ({RISK_PROFILES[k] * 100:.0f}% return)",
+        )
+    with i4:
+        horizon = st.slider("Time Horizon (Years)", 1, 40, 20)
+
+    annual_return = RISK_PROFILES[risk]
+    inv = comparison[loc_display_to_key[invest_display]]
+    proj = project_investment(
+        inv["monthly_surplus"], invest_pct / 100, annual_return,
+        horizon, inv["capital_gains_rate"],
+    )
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric(f"Total Wealth ({horizon} yrs)", money_fmt(proj.final_wealth))
+    m2.metric("Total Contributed", money_fmt(proj.total_contributions))
+    m3.metric("Investment Gains (After Tax)", money_fmt(proj.final_wealth - proj.total_contributions))
+    m4.metric("Cap. Gains Tax Paid", money_fmt(proj.capital_gains_tax))
+
+    st.divider()
+    g1, g2 = st.columns(2)
+
+    with g1:
+        st.subheader("Wealth Growth Over Time")
+        yrs_x = list(range(1, horizon + 1))
+        fig3 = go.Figure()
+        fig3.add_trace(go.Scatter(
+            name="Total Contributed", x=yrs_x, y=proj.yearly_contributed,
+            line=dict(color="#9e9e9e", dash="dash"),
+        ))
+        fig3.add_trace(go.Scatter(
+            name="Total Wealth (After Tax)", x=yrs_x, y=proj.yearly_wealth,
+            line=dict(color="#66bb6a", width=3),
+            fill="tonexty", fillcolor="rgba(102, 187, 106, 0.15)",
+        ))
+        fig3.update_layout(
+            xaxis=dict(title="Years"),
+            yaxis=dict(tickprefix=sym, tickformat=",.0f"),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            margin=dict(t=60, b=20, l=10, r=10),
+        )
+        st.plotly_chart(fig3, use_container_width=True)
+
+    with g2:
+        st.subheader(f"Final Wealth by Location ({horizon} yrs)")
+        loc_wealth = sorted(
+            (
+                (row["Location"],
+                 project_investment(
+                     comparison[row["_key"]]["monthly_surplus"], invest_pct / 100,
+                     annual_return, horizon, comparison[row["_key"]]["capital_gains_rate"],
+                 ).final_wealth)
+                for _, row in df.iterrows()
+            ),
+            key=lambda t: t[1],
+        )
+        locs_w  = [t[0] for t in loc_wealth]
+        wealths = [t[1] for t in loc_wealth]
+        w_rng   = [min(min(wealths), 0) * 1.18, max(max(wealths), 0) * 1.18]
+
+        fig4 = go.Figure(go.Bar(
+            x=locs_w, y=wealths,
+            marker_color=["#66bb6a" if v >= 0 else "#ef5350" for v in wealths],
+            text=[wealth_fmt(v) for v in wealths],
+            textposition="outside", textfont_size=11,
+        ))
+        fig4.update_layout(
+            yaxis=dict(tickprefix=sym, tickformat=",.0f", range=w_rng),
+            margin=dict(t=40, b=20, l=10, r=10),
+        )
+        st.plotly_chart(fig4, use_container_width=True)
+
+    st.caption(
+        "Assumes the invested share of each month's surplus earns the selected return, compounded monthly; "
+        "the remainder is held as cash at 0% growth. Capital gains tax is applied once, on sale at the end "
+        "of the horizon. Negative surpluses accumulate as a cash shortfall. All figures are nominal, "
+        "in the input currency."
+    )

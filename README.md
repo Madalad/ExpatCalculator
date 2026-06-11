@@ -11,6 +11,7 @@ This project helps expats and remote workers calculate and compare:
 - **Cost of living** estimates by lifestyle (low, medium, high)
 - **Capital gains tax rates** for investment income
 - **Location comparisons** to find the best financial fit
+- **Investment projections** — long-term wealth growth from investing your surplus, net of each location's capital gains tax
 
 ## Supported Locations
 
@@ -77,6 +78,7 @@ streamlit run app.py
 The app opens at `http://localhost:8501` and provides:
 - **Overview tab** — sortable comparison table for all locations + bar charts
 - **Location Detail tab** — full tax and cost-of-living breakdown for a selected city
+- **Investment tab** — project wealth growth from investing a share of your monthly surplus (choose risk profile and time horizon), with capital gains tax applied on sale and a cross-location comparison of final wealth
 
 Adjust income, currency, and lifestyle in the sidebar; the UI updates instantly.
 
@@ -299,6 +301,43 @@ class CostOfLivingBreakdown:
     transport: float
     utilities: float
     other: float
+```
+
+### project_investment
+
+Module-level function projecting wealth growth from investing a share of monthly surplus. The invested share compounds monthly at the chosen annual return; the remainder is held as cash at 0% growth. Capital gains tax is applied once, on sale at the end of the horizon.
+
+```python
+from src.script import project_investment
+
+proj = project_investment(
+    monthly_surplus=1500,      # in your input currency
+    invest_fraction=0.5,       # 50% of surplus invested
+    annual_return=0.07,        # 7% expected annual return
+    years=20,
+    capital_gains_rate=0.20,   # from get_capital_gains_tax_rate()
+)
+print(f"Final wealth: {proj.final_wealth:,.0f}")
+print(f"CGT paid:     {proj.capital_gains_tax:,.0f}")
+```
+
+### InvestmentProjection
+```python
+@dataclass
+class InvestmentProjection:
+    years: int
+    annual_return: float
+    capital_gains_rate: float
+    monthly_investment: float
+    monthly_cash: float
+    total_contributions: float
+    portfolio_gross: float
+    capital_gains_tax: float
+    portfolio_after_tax: float
+    cash_total: float
+    final_wealth: float
+    yearly_wealth: list       # after-tax total wealth if liquidated at end of each year
+    yearly_contributed: list  # cumulative surplus put in (invested + cash)
 ```
 
 ## Data Sources & Notes

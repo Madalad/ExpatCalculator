@@ -84,6 +84,23 @@ class CostOfLivingBreakdown:
     utilities: float
     other: float
 
+@dataclass
+class InvestmentProjection:
+    """Projected wealth growth from investing a share of monthly surplus."""
+    years: int
+    annual_return: float
+    capital_gains_rate: float
+    monthly_investment: float
+    monthly_cash: float
+    total_contributions: float
+    portfolio_gross: float
+    capital_gains_tax: float
+    portfolio_after_tax: float
+    cash_total: float
+    final_wealth: float
+    yearly_wealth: list       # after-tax total wealth if liquidated at end of each year
+    yearly_contributed: list  # cumulative surplus put in (invested + cash)
+
 class TaxCalculator:
     """Calculate taxes and take-home pay for different locations."""
     
@@ -328,6 +345,53 @@ class TaxCalculator:
     def get_available_locations(self) -> list:
         """Get list of available locations."""
         return list(self.tax_data["locations"].keys())
+
+
+def project_investment(monthly_surplus: float, invest_fraction: float,
+                       annual_return: float, years: int,
+                       capital_gains_rate: float) -> InvestmentProjection:
+    """
+    Project wealth growth from investing a share of monthly surplus.
+
+    The invested share of a positive surplus earns annual_return compounded
+    monthly; the remainder (and any deficit) is held as cash at 0% growth.
+    Capital gains tax is applied once, on sale at the end of the horizon.
+    All values are in the same currency as monthly_surplus.
+    """
+    monthly_invest = max(monthly_surplus, 0.0) * invest_fraction
+    monthly_cash = monthly_surplus - monthly_invest
+    monthly_rate = (1 + annual_return) ** (1 / 12) - 1
+
+    yearly_wealth = []
+    yearly_contributed = []
+    gross = contributed = cash = tax = 0.0
+    for year in range(1, years + 1):
+        n = year * 12
+        if monthly_rate > 0:
+            gross = monthly_invest * (((1 + monthly_rate) ** n - 1) / monthly_rate)
+        else:
+            gross = monthly_invest * n
+        contributed = monthly_invest * n
+        cash = monthly_cash * n
+        tax = max(gross - contributed, 0.0) * capital_gains_rate
+        yearly_wealth.append(gross - tax + cash)
+        yearly_contributed.append(contributed + cash)
+
+    return InvestmentProjection(
+        years=years,
+        annual_return=annual_return,
+        capital_gains_rate=capital_gains_rate,
+        monthly_investment=monthly_invest,
+        monthly_cash=monthly_cash,
+        total_contributions=contributed + cash,
+        portfolio_gross=gross,
+        capital_gains_tax=tax,
+        portfolio_after_tax=gross - tax,
+        cash_total=cash,
+        final_wealth=gross - tax + cash,
+        yearly_wealth=yearly_wealth,
+        yearly_contributed=yearly_contributed,
+    )
 
 
 def print_tax_result(result: TaxResult, col_result: CostOfLivingBreakdown = None, input_currency: str = "USD"):
