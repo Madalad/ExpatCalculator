@@ -12,6 +12,7 @@ This project helps expats and remote workers calculate and compare:
 - **Capital gains tax rates** for investment income
 - **Location comparisons** to find the best financial fit
 - **Investment projections** — long-term wealth growth from investing your surplus, net of each location's capital gains tax
+- **Salary normalisation (optional)** — scale income per location to reflect how pay for the same role varies by city and industry
 
 ## Supported Locations
 
@@ -38,12 +39,19 @@ This project helps expats and remote workers calculate and compare:
 
 ```
 ExpatCalculator/
+├── app.py                   # Streamlit web UI
 ├── src/
-│   └── script.py           # Main calculator script
+│   ├── __init__.py          # Public API re-exports
+│   ├── models.py            # Result dataclasses
+│   ├── currency.py          # Live exchange rates (open.er-api.com)
+│   ├── calculator.py        # TaxCalculator + investment projections
+│   ├── formatters.py        # Terminal output formatting
+│   └── script.py            # CLI entry point (python -m src.script)
 ├── data/
-│   ├── tax_rates.json      # Tax rate data by jurisdiction
-│   └── cost_of_living.json # Cost of living estimates
-└── README.md               # This file
+│   ├── tax_rates.json       # Tax rate data by jurisdiction
+│   ├── cost_of_living.json  # Cost of living estimates
+│   └── salary_indices.json  # Relative salary levels by location and industry
+└── README.md                # This file
 ```
 
 ## Data Files
@@ -64,6 +72,9 @@ Estimates annual and monthly costs of living by location and lifestyle level:
 
 Breakdown includes: housing, food, transport, utilities, and other expenses
 
+### `salary_indices.json`
+Approximate relative gross salary levels for the same role and seniority, indexed to New York = 1.00 within each industry (general, technology, finance, healthcare, engineering, education, hospitality). Used by the optional **salary normalisation** mode: income is scaled by `index(location) / index(base_location)`, so only ratios between cities within an industry matter.
+
 ## Usage
 
 ### Run the Web UI (Streamlit)
@@ -80,7 +91,7 @@ The app opens at `http://localhost:8501` and provides:
 - **Location Detail tab** — full tax and cost-of-living breakdown for a selected city
 - **Investment tab** — project wealth growth from investing a share of your monthly surplus (choose risk profile and time horizon), with capital gains tax applied on sale and a cross-location comparison of final wealth
 
-Adjust income, currency, and lifestyle in the sidebar; the UI updates instantly.
+Adjust income, currency, and lifestyle in the sidebar; the UI updates instantly. Optionally enable **Salary Normalisation** to scale the income for each location by typical pay for your industry — the income you enter is treated as your salary in the chosen base location, and a Gross Income column appears in the overview table.
 
 <br>
 
@@ -97,7 +108,7 @@ Adjust income, currency, and lifestyle in the sidebar; the UI updates instantly.
 
 ### Run From Terminal
 
-Input desired values to the following variables in `script.py`
+Input desired values to the following variables in `src/script.py`
 
 ```python
 ANNUAL_INCOME = 120_000
@@ -117,7 +128,7 @@ python -m src.script
 #### Basic Usage
 
 ```python
-from script import TaxCalculator, print_tax_result
+from src import TaxCalculator, print_tax_result
 
 # Initialize calculator
 calc = TaxCalculator()
@@ -135,7 +146,7 @@ print_tax_result(result, col)
 ```python
 locations = calc.get_available_locations()
 print(locations)
-# Output: ['london', 'new_york', 'hong_kong', 'chicago', 'dubai', 'zurich', 'tokyo', 'singapore', 'toronto', 'sydney', 'amsterdam']
+# Output: ['london', 'new_york', 'hong_kong', 'chicago', 'dubai', 'zurich', 'tokyo', 'singapore', 'toronto', 'sydney', 'amsterdam', 'cape_town', 'bern', 'bangkok']
 ```
 
 #### Compare All Locations
@@ -263,17 +274,21 @@ For a $100,000 annual income with medium lifestyle:
 
 ## Class Reference
 
-### TaxCalculator
+All public names are re-exported from the `src` package (`from src import TaxCalculator, ...`); the modules below are where they live.
+
+### TaxCalculator (`src/calculator.py`)
 
 **Methods:**
 - `calculate_income_tax(annual_income, location)` → TaxResult
 - `calculate_tax_on_brackets(income, brackets)` → (total_tax, effective_rate)
 - `get_capital_gains_tax_rate(location)` → (rate, notes)
 - `get_cost_of_living(location, lifestyle)` → CostOfLivingBreakdown
-- `compare_locations(annual_income, lifestyle)` → dict of results
+- `compare_locations(annual_income, input_currency, lifestyle, normalise_salaries=False, base_location=None, industry="general")` → dict of results
+- `get_salary_index(location, industry)` → float (New York = 1.00)
+- `get_available_industries()` → list
 - `get_available_locations()` → list
 
-### TaxResult
+### TaxResult (`src/models.py`)
 ```python
 @dataclass
 class TaxResult:
@@ -288,7 +303,7 @@ class TaxResult:
     take_home_pay: float
 ```
 
-### CostOfLivingBreakdown
+### CostOfLivingBreakdown (`src/models.py`)
 ```python
 @dataclass
 class CostOfLivingBreakdown:
@@ -303,12 +318,12 @@ class CostOfLivingBreakdown:
     other: float
 ```
 
-### project_investment
+### project_investment (`src/calculator.py`)
 
 Module-level function projecting wealth growth from investing a share of monthly surplus. The invested share compounds monthly at the chosen annual return; the remainder is held as cash at 0% growth. Capital gains tax is applied once, on sale at the end of the horizon.
 
 ```python
-from src.script import project_investment
+from src import project_investment
 
 proj = project_investment(
     monthly_surplus=1500,      # in your input currency
@@ -321,7 +336,7 @@ print(f"Final wealth: {proj.final_wealth:,.0f}")
 print(f"CGT paid:     {proj.capital_gains_tax:,.0f}")
 ```
 
-### InvestmentProjection
+### InvestmentProjection (`src/models.py`)
 ```python
 @dataclass
 class InvestmentProjection:

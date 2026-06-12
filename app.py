@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-from src.script import TaxCalculator, project_investment
+from src.calculator import TaxCalculator, project_investment
 
 st.set_page_config(page_title="ExpatCalculator", layout="wide")
 
@@ -17,8 +17,11 @@ def get_calculator():
 
 
 @st.cache_data
-def run_comparison(annual_income: float, currency: str, lifestyle: str):
-    return get_calculator().compare_locations(annual_income, currency, lifestyle)
+def run_comparison(annual_income: float, currency: str, lifestyle: str,
+                   normalise: bool = False, base_location: str = None, industry: str = "general"):
+    return get_calculator().compare_locations(
+        annual_income, currency, lifestyle, normalise, base_location, industry
+    )
 
 
 def color_columns(df, green_cols, red_cols):
@@ -60,10 +63,29 @@ with st.sidebar:
     lifestyle = st.radio(
         "Lifestyle", ["low", "medium", "high"], index=1, format_func=str.capitalize
     )
+    st.divider()
+    normalise = st.toggle(
+        "Salary Normalisation",
+        help="Scale the income for each location to reflect how salaries for the same role "
+             "vary by city and industry. The income you enter is treated as your salary "
+             "in the base location.",
+    )
+    industry, base_location = "general", None
+    if normalise:
+        calc = get_calculator()
+        industry = st.selectbox(
+            "Industry", calc.get_available_industries(), format_func=str.capitalize
+        )
+        loc_keys = calc.get_available_locations()
+        base_location = st.selectbox(
+            "Base Location", loc_keys,
+            index=loc_keys.index("london") if "london" in loc_keys else 0,
+            format_func=lambda k: k.replace("_", " ").title(),
+        )
 
 sym = CURRENCY_SYMBOLS[currency]
 input_to_usd = TaxCalculator.INPUT_CURRENCY_TO_USD[currency]
-comparison = run_comparison(annual_income, currency, lifestyle)
+comparison = run_comparison(annual_income, currency, lifestyle, normalise, base_location, industry)
 money_fmt  = lambda x: f"{sym}{x:,.0f}"
 abbrev_fmt = lambda x: f"{sym}{x/1000:.1f}k"
 wealth_fmt = lambda x: f"{sym}{x/1_000_000:.2f}M" if abs(x) >= 1_000_000 else f"{sym}{x/1000:.1f}k"
@@ -75,6 +97,7 @@ for loc, data in comparison.items():
     rows.append({
         "Location":               loc.replace("_", " ").title(),
         "_key":                   loc,
+        "Gross Income":           data["adjusted_income"],
         "Take-Home (Annual)":     data["take_home_input"],
         "Take-Home (Monthly)":    data["take_home_input"] / 12,
         "Cost of Living (Annual)":  data["col_annual_input"],
@@ -98,7 +121,11 @@ OVERVIEW_RED   = ["Cost of Living (Annual)", "Cost of Living (Monthly)", "Tax Ra
 
 st.markdown("<style>h3 { text-align: center; }</style>", unsafe_allow_html=True)
 st.title("ExpatCalculator")
-st.caption(f"Income: {sym}{annual_income:,} {currency} | Lifestyle: {lifestyle.capitalize()}")
+caption = f"Income: {sym}{annual_income:,} {currency} | Lifestyle: {lifestyle.capitalize()}"
+if normalise:
+    caption += (f" | Salaries normalised: {industry.capitalize()}, "
+                f"base {base_location.replace('_', ' ').title()}")
+st.caption(caption)
 
 tab_overview, tab_detail, tab_invest = st.tabs(["Overview", "Location Detail", "Investment"])
 
@@ -110,10 +137,13 @@ with tab_overview:
         "Cost of Living (Annual)", "Cost of Living (Monthly)",
         "Surplus (Annual)", "Surplus (Monthly)",
     ]
-    display_df = df.drop(columns=["_key"]).copy()
+    drop_cols = ["_key"] if normalise else ["_key", "Gross Income"]
+    display_df = df.drop(columns=drop_cols).copy()
     formatters = {col: money_fmt for col in money_cols}
     formatters["Tax Rate"]        = lambda x: f"{x * 100:.1f}%"
     formatters["Cap. Gains Rate"] = lambda x: f"{x * 100:.0f}%"
+    if normalise:
+        formatters["Gross Income"] = money_fmt
 
     st.dataframe(
         display_df.style

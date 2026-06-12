@@ -1,0 +1,136 @@
+{
+  "industries": ["general", "technology", "finance", "healthcare", "engineering", "education", "hospitality"],
+  "locations": {
+    "london": {
+      "general": 0.70,
+      "technology": 0.65,
+      "finance": 0.85,
+      "healthcare": 0.50,
+      "engineering": 0.60,
+      "education": 0.65,
+      "hospitality": 0.60
+    },
+    "new_york": {
+      "general": 1.00,
+      "technology": 1.00,
+      "finance": 1.00,
+      "healthcare": 1.00,
+      "engineering": 1.00,
+      "education": 1.00,
+      "hospitality": 1.00
+    },
+    "hong_kong": {
+      "general": 0.75,
+      "technology": 0.70,
+      "finance": 0.85,
+      "healthcare": 0.70,
+      "engineering": 0.65,
+      "education": 0.75,
+      "hospitality": 0.60
+    },
+    "chicago": {
+      "general": 0.85,
+      "technology": 0.85,
+      "finance": 0.80,
+      "healthcare": 0.95,
+      "engineering": 0.90,
+      "education": 0.90,
+      "hospitality": 0.85
+    },
+    "dubai": {
+      "general": 0.75,
+      "technology": 0.70,
+      "finance": 0.80,
+      "healthcare": 0.65,
+      "engineering": 0.70,
+      "education": 0.70,
+      "hospitality": 0.65
+    },
+    "zurich": {
+      "general": 1.05,
+      "technology": 0.95,
+      "finance": 1.00,
+      "healthcare": 0.95,
+      "engineering": 1.05,
+      "education": 1.10,
+      "hospitality": 1.10
+    },
+    "tokyo": {
+      "general": 0.55,
+      "technology": 0.55,
+      "finance": 0.65,
+      "healthcare": 0.50,
+      "engineering": 0.60,
+      "education": 0.55,
+      "hospitality": 0.45
+    },
+    "singapore": {
+      "general": 0.70,
+      "technology": 0.70,
+      "finance": 0.80,
+      "healthcare": 0.60,
+      "engineering": 0.65,
+      "education": 0.70,
+      "hospitality": 0.55
+    },
+    "toronto": {
+      "general": 0.65,
+      "technology": 0.65,
+      "finance": 0.65,
+      "healthcare": 0.70,
+      "engineering": 0.70,
+      "education": 0.75,
+      "hospitality": 0.65
+    },
+    "sydney": {
+      "general": 0.70,
+      "technology": 0.70,
+      "finance": 0.70,
+      "healthcare": 0.75,
+      "engineering": 0.75,
+      "education": 0.80,
+      "hospitality": 0.75
+    },
+    "amsterdam": {
+      "general": 0.60,
+      "technology": 0.60,
+      "finance": 0.65,
+      "healthcare": 0.55,
+      "engineering": 0.60,
+      "education": 0.65,
+      "hospitality": 0.55
+    },
+    "cape_town": {
+      "general": 0.35,
+      "technology": 0.40,
+      "finance": 0.40,
+      "healthcare": 0.35,
+      "engineering": 0.35,
+      "education": 0.30,
+      "hospitality": 0.25
+    },
+    "bern": {
+      "general": 0.95,
+      "technology": 0.85,
+      "finance": 0.85,
+      "healthcare": 0.90,
+      "engineering": 0.95,
+      "education": 1.05,
+      "hospitality": 1.05
+    },
+    "bangkok": {
+      "general": 0.35,
+      "technology": 0.40,
+      "finance": 0.40,
+      "healthcare": 0.30,
+      "engineering": 0.35,
+      "education": 0.35,
+      "hospitality": 0.25
+    }
+  },
+  "notes": {
+    "general": "Approximate relative gross salary levels for the same role and seniority, indexed to New York = 1.00 within each industry. Based on 2024-2025 market data; values are rough planning estimates only.",
+    "usage": "Used by the optional salary normalisation mode. Only ratios between cities within an industry matter: income is scaled by index(location) / index(base_location).",
+    "industries": "'general' represents an average professional role and is the default when no industry is selected."
+  }
+}
