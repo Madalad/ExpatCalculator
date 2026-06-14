@@ -149,7 +149,7 @@ with tab_overview:
         display_df.style
             .format(formatters)
             .apply(color_columns, green_cols=OVERVIEW_GREEN, red_cols=OVERVIEW_RED, axis=None),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -182,7 +182,7 @@ with tab_overview:
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             margin=dict(t=60, b=20, l=10, r=10),
         )
-        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig1, width="stretch")
 
     with c2:
         st.subheader("Annual Surplus")
@@ -202,7 +202,7 @@ with tab_overview:
             yaxis=dict(tickprefix=sym, tickformat=",.0f", range=y_rng),
             margin=dict(t=40, b=20, l=10, r=10),
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width="stretch")
 
 # ── Location Detail ───────────────────────────────────────────────────────────
 
@@ -268,7 +268,7 @@ with tab_detail:
         st.dataframe(
             tax_df.style
                 .apply(color_rows, row_colors=[r[2] for r in tax_spec], value_cols=["Value"], axis=None),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -279,7 +279,7 @@ with tab_detail:
                 .format({"Annual": money_fmt, "Monthly": money_fmt})
                 .apply(color_rows, row_colors=col_row_colors, value_cols=["Annual", "Monthly"], axis=None)
                 .apply(bold_last_row, axis=None),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -336,7 +336,7 @@ with tab_invest:
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             margin=dict(t=60, b=20, l=10, r=10),
         )
-        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(fig3, width="stretch")
 
     with g2:
         st.subheader(f"Final Wealth by Location ({horizon} yrs)")
@@ -365,7 +365,7 @@ with tab_invest:
             yaxis=dict(tickprefix=sym, tickformat=",.0f", range=w_rng),
             margin=dict(t=40, b=20, l=10, r=10),
         )
-        st.plotly_chart(fig4, use_container_width=True)
+        st.plotly_chart(fig4, width="stretch")
 
     st.caption(
         "Assumes the invested share of each month's surplus earns the selected return, compounded monthly; "
