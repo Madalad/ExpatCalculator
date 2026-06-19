@@ -2,16 +2,18 @@
 
 A Python tool to compare take-home pay and cost of living across different international locations.
 
+**🌐 Live app: [expatcalculator.streamlit.app](https://expatcalculator.streamlit.app)** — no installation required.
+
 ## Overview
 
 This project helps expats and remote workers calculate and compare:
 - **Income tax** (federal, state, local, and social contributions)
 - **Effective tax rates** across different jurisdictions  
 - **Take-home pay** after all taxes
-- **Cost of living** estimates by lifestyle (low, medium, high)
+- **Cost of living** estimates by lifestyle (low, medium, high), or your own custom per-category figures
 - **Capital gains tax rates** for investment income
 - **Location comparisons** to find the best financial fit
-- **Investment projections** — long-term wealth growth from investing your surplus, net of each location's capital gains tax
+- **Investment projections** — long-term wealth growth from investing your surplus, with expected salary growth and cost-of-living inflation, net of each location's capital gains tax
 - **Salary normalisation (optional)** — scale income per location to reflect how pay for the same role varies by city and industry
 
 ## Supported Locations
@@ -77,19 +79,23 @@ Approximate relative gross salary levels for the same role and seniority, indexe
 
 ## Usage
 
-### Run the Web UI (Streamlit)
+### Use the Web UI (Streamlit)
 
-Install dependencies and launch the interactive web app:
+The app is hosted online and always available at **[expatcalculator.streamlit.app](https://expatcalculator.streamlit.app)** — just open the link, no installation needed.
+
+To run it locally instead (for development), install the dependencies and launch it:
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The app opens at `http://localhost:8501` and provides:
+This serves the same app at `http://localhost:8501`.
+
+The web UI provides:
 - **Overview tab** — sortable comparison table for all locations + bar charts
-- **Location Detail tab** — full tax and cost-of-living breakdown for a selected city
-- **Investment tab** — project wealth growth from investing a share of your monthly surplus (choose risk profile and time horizon), with capital gains tax applied on sale and a cross-location comparison of final wealth
+- **Location Detail tab** — full tax and cost-of-living breakdown for a selected city, with the option to override the cost-of-living figures with your own (custom values apply across the whole app for that city)
+- **Investment tab** — project wealth growth from investing a share of your monthly surplus (choose risk profile, time horizon, expected annual salary growth, and cost-of-living inflation), with capital gains tax applied on sale and a cross-location comparison of final wealth
 
 Adjust income, currency, and lifestyle in the sidebar; the UI updates instantly. Optionally enable **Salary Normalisation** to scale the income for each location by typical pay for your industry — the income you enter is treated as your salary in the chosen base location, and a Gross Income column appears in the overview table.
 
@@ -282,8 +288,8 @@ All public names are re-exported from the `src` package (`from src import TaxCal
 - `calculate_income_tax(annual_income, location)` → TaxResult
 - `calculate_tax_on_brackets(income, brackets)` → (total_tax, effective_rate)
 - `get_capital_gains_tax_rate(location)` → (rate, notes)
-- `get_cost_of_living(location, lifestyle)` → CostOfLivingBreakdown
-- `compare_locations(annual_income, input_currency, lifestyle, normalise_salaries=False, base_location=None, industry="general")` → dict of results
+- `get_cost_of_living(location, lifestyle, custom_values=None)` → CostOfLivingBreakdown (custom_values: partial `{category: annual_usd}` override)
+- `compare_locations(annual_income, input_currency, lifestyle, normalise_salaries=False, base_location=None, industry="general", custom_col=None)` → dict of results (custom_col: `{location: {category: annual_usd}}`)
 - `get_salary_index(location, industry)` → float (New York = 1.00)
 - `get_available_industries()` → list
 - `get_available_locations()` → list
@@ -320,17 +326,20 @@ class CostOfLivingBreakdown:
 
 ### project_investment (`src/calculator.py`)
 
-Module-level function projecting wealth growth from investing a share of monthly surplus. The invested share compounds monthly at the chosen annual return; the remainder is held as cash at 0% growth. Capital gains tax is applied once, on sale at the end of the horizon.
+Module-level function projecting wealth growth from investing a share of monthly surplus. Each year, take-home pay grows by `salary_growth` and cost of living by `col_inflation`, and the surplus is recomputed monthly. The invested share compounds monthly at the chosen annual return; the remainder is held as cash at 0% growth. Capital gains tax is applied once, on sale at the end of the horizon. With both growth rates at 0 it reduces to a constant-surplus projection.
 
 ```python
 from src import project_investment
 
 proj = project_investment(
-    monthly_surplus=1500,      # in your input currency
+    monthly_take_home=5000,    # in your input currency
+    monthly_cost=3000,         # cost of living per month
     invest_fraction=0.5,       # 50% of surplus invested
     annual_return=0.07,        # 7% expected annual return
     years=20,
     capital_gains_rate=0.20,   # from get_capital_gains_tax_rate()
+    salary_growth=0.03,        # 3%/yr take-home growth (optional)
+    col_inflation=0.02,        # 2%/yr cost-of-living inflation (optional)
 )
 print(f"Final wealth: {proj.final_wealth:,.0f}")
 print(f"CGT paid:     {proj.capital_gains_tax:,.0f}")
@@ -351,8 +360,10 @@ class InvestmentProjection:
     portfolio_after_tax: float
     cash_total: float
     final_wealth: float
-    yearly_wealth: list       # after-tax total wealth if liquidated at end of each year
-    yearly_contributed: list  # cumulative surplus put in (invested + cash)
+    yearly_wealth: list        # after-tax total wealth if liquidated at end of each year
+    yearly_contributed: list   # cumulative surplus put in (invested + cash)
+    salary_growth: float = 0.0
+    col_inflation: float = 0.0
 ```
 
 ## Data Sources & Notes

@@ -184,8 +184,17 @@ class TaxCalculator:
 
         return rate, notes
 
-    def get_cost_of_living(self, location: str, lifestyle: str = "medium") -> CostOfLivingBreakdown:
-        """Get cost of living breakdown for a location."""
+    COL_CATEGORIES = ["housing", "food", "transport", "utilities", "other"]
+
+    def get_cost_of_living(self, location: str, lifestyle: str = "medium",
+                           custom_values: dict = None) -> CostOfLivingBreakdown:
+        """
+        Get cost of living breakdown for a location (annual amounts in USD).
+
+        If custom_values is given (a partial or full {category: annual_usd} dict),
+        those categories override the preset; any missing category keeps its preset
+        value, and the totals are recomputed from the resulting per-category amounts.
+        """
         if location not in self.col_data["locations"]:
             raise ValueError(f"Location '{location}' not found in cost of living data")
 
@@ -195,18 +204,25 @@ class TaxCalculator:
 
         bracket = loc_data["cost_of_living_brackets"][lifestyle]
         annual_total = bracket["annual_usd"]
-        monthly_total = bracket["monthly_usd"]
+        cats = {c: annual_total * bracket[f"{c}_percent"] for c in self.COL_CATEGORIES}
+
+        if custom_values:
+            cats = {c: float(custom_values.get(c, cats[c])) for c in self.COL_CATEGORIES}
+            annual_total = sum(cats.values())
+            monthly_total = annual_total / 12
+        else:
+            monthly_total = bracket["monthly_usd"]
 
         return CostOfLivingBreakdown(
             location=location,
             lifestyle_level=lifestyle,
             annual_total=annual_total,
             monthly_total=monthly_total,
-            housing=annual_total * bracket["housing_percent"],
-            food=annual_total * bracket["food_percent"],
-            transport=annual_total * bracket["transport_percent"],
-            utilities=annual_total * bracket["utilities_percent"],
-            other=annual_total * bracket["other_percent"]
+            housing=cats["housing"],
+            food=cats["food"],
+            transport=cats["transport"],
+            utilities=cats["utilities"],
+            other=cats["other"],
         )
 
     def get_salary_index(self, location: str, industry: str = "general") -> float:
@@ -223,16 +239,20 @@ class TaxCalculator:
 
     def compare_locations(self, annual_income: float, input_currency: str, lifestyle: str = "medium",
                           normalise_salaries: bool = False, base_location: str = None,
-                          industry: str = "general"):
+                          industry: str = "general", custom_col: dict = None):
         """
         Compare all locations for a given income and lifestyle.
 
         With normalise_salaries=True, annual_income is treated as the salary in
         base_location for the given industry, and each location's income is
         scaled by its salary index relative to the base location's.
+
+        custom_col, if given, maps {location: {category: annual_usd}} and overrides
+        that location's cost of living everywhere it is used.
         """
         locations = list(self.tax_data["locations"].keys())
         results = {}
+        custom_col = custom_col or {}
 
         # Get conversion rate from input currency to USD
         input_to_usd = self.INPUT_CURRENCY_TO_USD[input_currency]
@@ -249,7 +269,7 @@ class TaxCalculator:
                 if normalise_salaries:
                     location_income = annual_income * self.get_salary_index(location, industry) / base_index
                 tax_result = self.calculate_income_tax(location_income, input_currency, location)
-                col_result = self.get_cost_of_living(location, lifestyle)
+                col_result = self.get_cost_of_living(location, lifestyle, custom_col.get(location))
                 cap_gains_rate, _ = self.get_capital_gains_tax_rate(location)
 
                 # Get exchange rate to convert from local currency to USD
@@ -289,48 +309,62 @@ class TaxCalculator:
         return list(self.tax_data["locations"].keys())
 
 
-def project_investment(monthly_surplus: float, invest_fraction: float,
-                       annual_return: float, years: int,
-                       capital_gains_rate: float) -> InvestmentProjection:
+def project_investment(monthly_take_home: float, monthly_cost: float, invest_fraction: float,
+                       annual_return: float, years: int, capital_gains_rate: float,
+                       salary_growth: float = 0.0, col_inflation: float = 0.0) -> InvestmentProjection:
     """
     Project wealth growth from investing a share of monthly surplus.
 
-    The invested share of a positive surplus earns annual_return compounded
-    monthly; the remainder (and any deficit) is held as cash at 0% growth.
-    Capital gains tax is applied once, on sale at the end of the horizon.
-    All values are in the same currency as monthly_surplus.
+    Each year, take-home pay grows by salary_growth and cost of living grows by
+    col_inflation; the surplus is recomputed monthly from the two. The invested
+    share of a positive surplus earns annual_return compounded monthly; the
+    remainder (and any deficit) is held as cash at 0% growth. Capital gains tax is
+    applied once, on sale at the end of the horizon. All values share one currency.
+
+    With salary_growth = col_inflation = 0 this reduces to a constant-surplus
+    projection. Take-home is scaled linearly with salary (tax bracket creep is
+    not modelled), consistent with the rest of the calculator.
     """
-    monthly_invest = max(monthly_surplus, 0.0) * invest_fraction
-    monthly_cash = monthly_surplus - monthly_invest
     monthly_rate = (1 + annual_return) ** (1 / 12) - 1
 
+    portfolio = cash = contributed = 0.0
+    first_invest = first_cash = 0.0
     yearly_wealth = []
     yearly_contributed = []
-    gross = contributed = cash = tax = 0.0
-    for year in range(1, years + 1):
-        n = year * 12
-        if monthly_rate > 0:
-            gross = monthly_invest * (((1 + monthly_rate) ** n - 1) / monthly_rate)
-        else:
-            gross = monthly_invest * n
-        contributed = monthly_invest * n
-        cash = monthly_cash * n
-        tax = max(gross - contributed, 0.0) * capital_gains_rate
-        yearly_wealth.append(gross - tax + cash)
-        yearly_contributed.append(contributed + cash)
+    for month in range(1, years * 12 + 1):
+        year_index = (month - 1) // 12
+        take_home = monthly_take_home * (1 + salary_growth) ** year_index
+        cost = monthly_cost * (1 + col_inflation) ** year_index
+        surplus = take_home - cost
+        invest_m = max(surplus, 0.0) * invest_fraction
+        cash_m = surplus - invest_m
+        if month == 1:
+            first_invest, first_cash = invest_m, cash_m
 
+        portfolio = portfolio * (1 + monthly_rate) + invest_m
+        cash += cash_m
+        contributed += invest_m
+
+        if month % 12 == 0:
+            tax_y = max(portfolio - contributed, 0.0) * capital_gains_rate
+            yearly_wealth.append(portfolio - tax_y + cash)
+            yearly_contributed.append(contributed + cash)
+
+    tax = max(portfolio - contributed, 0.0) * capital_gains_rate
     return InvestmentProjection(
         years=years,
         annual_return=annual_return,
         capital_gains_rate=capital_gains_rate,
-        monthly_investment=monthly_invest,
-        monthly_cash=monthly_cash,
+        monthly_investment=first_invest,
+        monthly_cash=first_cash,
         total_contributions=contributed + cash,
-        portfolio_gross=gross,
+        portfolio_gross=portfolio,
         capital_gains_tax=tax,
-        portfolio_after_tax=gross - tax,
+        portfolio_after_tax=portfolio - tax,
         cash_total=cash,
-        final_wealth=gross - tax + cash,
+        final_wealth=portfolio - tax + cash,
         yearly_wealth=yearly_wealth,
         yearly_contributed=yearly_contributed,
+        salary_growth=salary_growth,
+        col_inflation=col_inflation,
     )

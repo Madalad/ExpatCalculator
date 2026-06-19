@@ -7,6 +7,9 @@ st.set_page_config(page_title="ExpatCalculator", layout="wide")
 
 CURRENCY_SYMBOLS = {"USD": "$", "GBP": "£"}
 RISK_PROFILES = {"Conservative": 0.04, "Moderate": 0.07, "High Risk": 0.10}
+COL_CATEGORIES = ["housing", "food", "transport", "utilities", "other"]
+COL_LABELS = {"housing": "Housing", "food": "Food", "transport": "Transport",
+              "utilities": "Utilities", "other": "Other"}
 GREEN = "color: #2e7d32"
 RED   = "color: #c62828"
 
@@ -18,9 +21,11 @@ def get_calculator():
 
 @st.cache_data
 def run_comparison(annual_income: float, currency: str, lifestyle: str,
-                   normalise: bool = False, base_location: str = None, industry: str = "general"):
+                   normalise: bool = False, base_location: str = None, industry: str = "general",
+                   custom_col_key: tuple = ()):
+    custom_col = {loc: dict(items) for loc, items in custom_col_key}
     return get_calculator().compare_locations(
-        annual_income, currency, lifestyle, normalise, base_location, industry
+        annual_income, currency, lifestyle, normalise, base_location, industry, custom_col
     )
 
 
@@ -54,6 +59,21 @@ def color_rows(df, row_colors, value_cols=None):
     return styles
 
 
+def toggle_custom_col(loc_key):
+    """Enable/disable custom cost of living for a location (clears overrides when off)."""
+    cc = st.session_state.setdefault("custom_col", {})
+    if st.session_state[f"colcustom_on_{loc_key}"]:
+        cc.setdefault(loc_key, {})
+    else:
+        cc.pop(loc_key, None)
+
+
+def save_custom_col(loc_key, category, widget_key, to_usd):
+    """Persist an edited category value (entered in input currency) as USD."""
+    cc = st.session_state.setdefault("custom_col", {})
+    cc.setdefault(loc_key, {})[category] = st.session_state[widget_key] * to_usd
+
+
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 
 with st.sidebar:
@@ -85,7 +105,12 @@ with st.sidebar:
 
 sym = CURRENCY_SYMBOLS[currency]
 input_to_usd = TaxCalculator.INPUT_CURRENCY_TO_USD[currency]
-comparison = run_comparison(annual_income, currency, lifestyle, normalise, base_location, industry)
+
+# Custom cost of living lives in session_state as {location: {category: annual_usd}};
+# only non-empty overrides are applied. Passed to the cache as a hashable tuple.
+custom_col = {k: v for k, v in st.session_state.get("custom_col", {}).items() if v}
+custom_col_key = tuple(sorted((loc, tuple(sorted(v.items()))) for loc, v in custom_col.items()))
+comparison = run_comparison(annual_income, currency, lifestyle, normalise, base_location, industry, custom_col_key)
 money_fmt  = lambda x: f"{sym}{x:,.0f}"
 abbrev_fmt = lambda x: f"{sym}{x/1000:.1f}k"
 wealth_fmt = lambda x: f"{sym}{x/1_000_000:.2f}M" if abs(x) >= 1_000_000 else f"{sym}{x/1000:.1f}k"
@@ -125,6 +150,9 @@ caption = f"Income: {sym}{annual_income:,} {currency} | Lifestyle: {lifestyle.ca
 if normalise:
     caption += (f" | Salaries normalised: {industry.capitalize()}, "
                 f"base {base_location.replace('_', ' ').title()}")
+if custom_col:
+    cities = ", ".join(k.replace("_", " ").title() for k in sorted(custom_col))
+    caption += f" | Custom CoL: {cities}"
 st.caption(caption)
 
 tab_overview, tab_detail, tab_invest = st.tabs(["Overview", "Location Detail", "Investment"])
@@ -274,6 +302,35 @@ with tab_detail:
 
     with col_right:
         st.subheader("Cost of Living Breakdown")
+
+        st.toggle(
+            "Customise values",
+            key=f"colcustom_on_{selected_key}",
+            on_change=toggle_custom_col, args=(selected_key,),
+            help="Enter your own annual cost-of-living figures for this city. Custom values "
+                 "replace the presets across the whole app (Overview, surplus, Investment) "
+                 "for this location.",
+        )
+
+        if st.session_state.get(f"colcustom_on_{selected_key}"):
+            preset = get_calculator().get_cost_of_living(selected_key, lifestyle)
+            saved_usd = st.session_state.get("custom_col", {}).get(selected_key, {})
+            in1, in2 = st.columns(2)
+            for i, cat in enumerate(COL_CATEGORIES):
+                wkey = f"colinput_{selected_key}_{cat}_{currency}"
+                if wkey not in st.session_state:
+                    base_usd = saved_usd.get(cat, getattr(preset, cat))
+                    st.session_state[wkey] = round(base_usd / input_to_usd, 2)
+                (in1 if i % 2 == 0 else in2).number_input(
+                    f"{COL_LABELS[cat]} (Annual)", min_value=0.0, step=500.0, key=wkey,
+                    on_change=save_custom_col, args=(selected_key, cat, wkey, input_to_usd),
+                )
+            if st.button("Reset to preset", key=f"colreset_{selected_key}"):
+                st.session_state.setdefault("custom_col", {})[selected_key] = {}
+                for cat in COL_CATEGORIES:
+                    st.session_state.pop(f"colinput_{selected_key}_{cat}_{currency}", None)
+                st.rerun()
+
         st.dataframe(
             col_df.style
                 .format({"Annual": money_fmt, "Monthly": money_fmt})
@@ -301,11 +358,23 @@ with tab_invest:
     with i4:
         horizon = st.slider("Time Horizon (Years)", 1, 40, 20)
 
+    i5, i6, _i7, _i8 = st.columns(4)
+    with i5:
+        salary_growth = st.slider(
+            "Salary Growth (%/yr)", 0.0, 10.0, 0.0, step=0.5,
+            help="Annual % increase in take-home pay over the horizon.",
+        ) / 100
+    with i6:
+        col_inflation = st.slider(
+            "CoL Inflation (%/yr)", 0.0, 10.0, 0.0, step=0.5,
+            help="Annual % increase in cost of living over the horizon.",
+        ) / 100
+
     annual_return = RISK_PROFILES[risk]
     inv = comparison[loc_display_to_key[invest_display]]
     proj = project_investment(
-        inv["monthly_surplus"], invest_pct / 100, annual_return,
-        horizon, inv["capital_gains_rate"],
+        inv["take_home_input"] / 12, inv["col_monthly_input"], invest_pct / 100,
+        annual_return, horizon, inv["capital_gains_rate"], salary_growth, col_inflation,
     )
 
     m1, m2, m3, m4 = st.columns(4)
@@ -344,8 +413,10 @@ with tab_invest:
             (
                 (row["Location"],
                  project_investment(
-                     comparison[row["_key"]]["monthly_surplus"], invest_pct / 100,
+                     comparison[row["_key"]]["take_home_input"] / 12,
+                     comparison[row["_key"]]["col_monthly_input"], invest_pct / 100,
                      annual_return, horizon, comparison[row["_key"]]["capital_gains_rate"],
+                     salary_growth, col_inflation,
                  ).final_wealth)
                 for _, row in df.iterrows()
             ),
@@ -369,7 +440,8 @@ with tab_invest:
 
     st.caption(
         "Assumes the invested share of each month's surplus earns the selected return, compounded monthly; "
-        "the remainder is held as cash at 0% growth. Capital gains tax is applied once, on sale at the end "
-        "of the horizon. Negative surpluses accumulate as a cash shortfall. All figures are nominal, "
-        "in the input currency."
+        "the remainder is held as cash at 0% growth. Take-home pay grows by the salary-growth rate and cost "
+        "of living by the inflation rate each year (take-home scales linearly with salary; tax bracket creep "
+        "is not modelled). Capital gains tax is applied once, on sale at the end of the horizon. Negative "
+        "surpluses accumulate as a cash shortfall. All figures are nominal, in the input currency."
     )

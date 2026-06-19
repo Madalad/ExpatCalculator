@@ -43,13 +43,15 @@ class InvestmentProjection:
     years: int
     annual_return: float
     capital_gains_rate: float
-    monthly_investment: float
-    monthly_cash: float
+    monthly_investment: float  # invested amount in the first month (grows with salary)
+    monthly_cash: float        # cash amount in the first month
     total_contributions: float
     portfolio_gross: float
     capital_gains_tax: float
     portfolio_after_tax: float
     cash_total: float
     final_wealth: float
-    yearly_wealth: list       # after-tax total wealth if liquidated at end of each year
-    yearly_contributed: list  # cumulative surplus put in (invested + cash)
+    yearly_wealth: list        # after-tax total wealth if liquidated at end of each year
+    yearly_contributed: list   # cumulative surplus put in (invested + cash)
+    salary_growth: float = 0.0
+    col_inflation: float = 0.0
