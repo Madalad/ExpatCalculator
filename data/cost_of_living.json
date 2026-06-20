@@ -503,6 +503,222 @@
           "other_percent": 0.35
         }
       }
+    },
+    "lisbon": {
+      "name": "Lisbon, Portugal",
+      "currency": "EUR",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, shared flat or suburbs, public transport, local dining",
+          "monthly_usd": 1500,
+          "annual_usd": 18000,
+          "housing_percent": 0.40,
+          "food_percent": 0.16,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.09,
+          "other_percent": 0.25
+        },
+        "medium": {
+          "description": "Comfortable expat lifestyle, central apartment, varied dining, leisure",
+          "monthly_usd": 2800,
+          "annual_usd": 33600,
+          "housing_percent": 0.38,
+          "food_percent": 0.14,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.08,
+          "other_percent": 0.32
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas (Chiado/Avenidas), fine dining, private transport",
+          "monthly_usd": 5500,
+          "annual_usd": 66000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.06,
+          "utilities_percent": 0.06,
+          "other_percent": 0.36
+        }
+      }
+    },
+    "berlin": {
+      "name": "Berlin, Germany",
+      "currency": "EUR",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, shared flat, public transport, budget dining",
+          "monthly_usd": 1800,
+          "annual_usd": 21600,
+          "housing_percent": 0.38,
+          "food_percent": 0.15,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.10,
+          "other_percent": 0.27
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, private flat, varied dining, leisure activities",
+          "monthly_usd": 3500,
+          "annual_usd": 42000,
+          "housing_percent": 0.35,
+          "food_percent": 0.13,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.09,
+          "other_percent": 0.35
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas (Mitte/Charlottenburg), fine dining, private car",
+          "monthly_usd": 6500,
+          "annual_usd": 78000,
+          "housing_percent": 0.38,
+          "food_percent": 0.12,
+          "transport_percent": 0.06,
+          "utilities_percent": 0.06,
+          "other_percent": 0.38
+        }
+      }
+    },
+    "dublin": {
+      "name": "Dublin, Ireland",
+      "currency": "EUR",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, shared accommodation, public transport, budget dining",
+          "monthly_usd": 2200,
+          "annual_usd": 26400,
+          "housing_percent": 0.45,
+          "food_percent": 0.14,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.08,
+          "other_percent": 0.25
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, city apartment, varied dining, leisure",
+          "monthly_usd": 4200,
+          "annual_usd": 50400,
+          "housing_percent": 0.42,
+          "food_percent": 0.12,
+          "transport_percent": 0.07,
+          "utilities_percent": 0.07,
+          "other_percent": 0.32
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas (Ballsbridge/city centre), fine dining, private transport",
+          "monthly_usd": 7500,
+          "annual_usd": 90000,
+          "housing_percent": 0.45,
+          "food_percent": 0.11,
+          "transport_percent": 0.05,
+          "utilities_percent": 0.05,
+          "other_percent": 0.34
+        }
+      }
+    },
+    "miami": {
+      "name": "Miami, USA",
+      "currency": "USD",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, shared apartment or suburbs, local dining, some transit",
+          "monthly_usd": 2400,
+          "annual_usd": 28800,
+          "housing_percent": 0.40,
+          "food_percent": 0.14,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.08,
+          "other_percent": 0.28
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, private apartment, varied dining, entertainment",
+          "monthly_usd": 4800,
+          "annual_usd": 57600,
+          "housing_percent": 0.38,
+          "food_percent": 0.12,
+          "transport_percent": 0.09,
+          "utilities_percent": 0.07,
+          "other_percent": 0.34
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas (Brickell/South Beach), fine dining, private transport",
+          "monthly_usd": 8500,
+          "annual_usd": 102000,
+          "housing_percent": 0.40,
+          "food_percent": 0.12,
+          "transport_percent": 0.06,
+          "utilities_percent": 0.05,
+          "other_percent": 0.37
+        }
+      }
+    },
+    "mexico_city": {
+      "name": "Mexico City, Mexico",
+      "currency": "MXN",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, local neighbourhood, public transport, local dining",
+          "monthly_usd": 1100,
+          "annual_usd": 13200,
+          "housing_percent": 0.38,
+          "food_percent": 0.18,
+          "transport_percent": 0.12,
+          "utilities_percent": 0.10,
+          "other_percent": 0.22
+        },
+        "medium": {
+          "description": "Comfortable expat lifestyle, Roma/Condesa apartment, varied dining, leisure",
+          "monthly_usd": 2200,
+          "annual_usd": 26400,
+          "housing_percent": 0.36,
+          "food_percent": 0.16,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.09,
+          "other_percent": 0.29
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas (Polanco/Lomas), fine dining, private transport",
+          "monthly_usd": 4500,
+          "annual_usd": 54000,
+          "housing_percent": 0.40,
+          "food_percent": 0.13,
+          "transport_percent": 0.07,
+          "utilities_percent": 0.06,
+          "other_percent": 0.34
+        }
+      }
+    },
+    "bangalore": {
+      "name": "Bangalore, India",
+      "currency": "INR",
+      "cost_of_living_brackets": {
+        "low": {
+          "description": "Modest lifestyle, shared flat, local transport, local dining",
+          "monthly_usd": 700,
+          "annual_usd": 8400,
+          "housing_percent": 0.35,
+          "food_percent": 0.20,
+          "transport_percent": 0.12,
+          "utilities_percent": 0.10,
+          "other_percent": 0.23
+        },
+        "medium": {
+          "description": "Comfortable lifestyle, private apartment, varied dining, leisure",
+          "monthly_usd": 1400,
+          "annual_usd": 16800,
+          "housing_percent": 0.38,
+          "food_percent": 0.16,
+          "transport_percent": 0.10,
+          "utilities_percent": 0.09,
+          "other_percent": 0.27
+        },
+        "high": {
+          "description": "Luxury lifestyle, premium areas (Indiranagar/Koramangala), fine dining, private transport",
+          "monthly_usd": 3000,
+          "annual_usd": 36000,
+          "housing_percent": 0.40,
+          "food_percent": 0.13,
+          "transport_percent": 0.08,
+          "utilities_percent": 0.07,
+          "other_percent": 0.32
+        }
+      }
     }
   },
   "notes": {

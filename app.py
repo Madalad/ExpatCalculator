@@ -68,10 +68,10 @@ def toggle_custom_col(loc_key):
         cc.pop(loc_key, None)
 
 
-def save_custom_col(loc_key, category, widget_key, to_usd):
-    """Persist an edited category value (entered in input currency) as USD."""
+def save_custom_col(loc_key, category, widget_key, to_annual_usd):
+    """Persist an edited monthly value (entered in input currency) as annual USD."""
     cc = st.session_state.setdefault("custom_col", {})
-    cc.setdefault(loc_key, {})[category] = st.session_state[widget_key] * to_usd
+    cc.setdefault(loc_key, {})[category] = st.session_state[widget_key] * to_annual_usd
 
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
@@ -242,6 +242,7 @@ with tab_detail:
     data       = comparison[selected_key]
     tax        = data["tax_result"]
     col_result = data["col_result"]
+    loc_notes  = get_calculator().tax_data["locations"][selected_key].get("notes", "")
 
     to_input     = 1 / (tax.exchange_rate_usd * input_to_usd)
     gross        = tax.gross_income         * to_input
@@ -292,7 +293,7 @@ with tab_detail:
     col_left, col_right = st.columns(2)
 
     with col_left:
-        st.subheader("Tax Breakdown")
+        st.subheader("Tax Breakdown", help=loc_notes)
         st.dataframe(
             tax_df.style
                 .apply(color_rows, row_colors=[r[2] for r in tax_spec], value_cols=["Value"], axis=None),
@@ -320,10 +321,10 @@ with tab_detail:
                 wkey = f"colinput_{selected_key}_{cat}_{currency}"
                 if wkey not in st.session_state:
                     base_usd = saved_usd.get(cat, getattr(preset, cat))
-                    st.session_state[wkey] = round(base_usd / input_to_usd, 2)
+                    st.session_state[wkey] = round(base_usd / 12 / input_to_usd, 2)
                 (in1 if i % 2 == 0 else in2).number_input(
-                    f"{COL_LABELS[cat]} (Annual)", min_value=0.0, step=500.0, key=wkey,
-                    on_change=save_custom_col, args=(selected_key, cat, wkey, input_to_usd),
+                    f"{COL_LABELS[cat]} (Monthly)", min_value=0.0, step=50.0, key=wkey,
+                    on_change=save_custom_col, args=(selected_key, cat, wkey, input_to_usd * 12),
                 )
             if st.button("Reset to preset", key=f"colreset_{selected_key}"):
                 st.session_state.setdefault("custom_col", {})[selected_key] = {}

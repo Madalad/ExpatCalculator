@@ -126,6 +126,60 @@
       "engineering": 0.35,
       "education": 0.35,
       "hospitality": 0.25
+    },
+    "lisbon": {
+      "general": 0.45,
+      "technology": 0.45,
+      "finance": 0.45,
+      "healthcare": 0.40,
+      "engineering": 0.45,
+      "education": 0.45,
+      "hospitality": 0.40
+    },
+    "berlin": {
+      "general": 0.65,
+      "technology": 0.70,
+      "finance": 0.65,
+      "healthcare": 0.60,
+      "engineering": 0.70,
+      "education": 0.65,
+      "hospitality": 0.55
+    },
+    "dublin": {
+      "general": 0.75,
+      "technology": 0.85,
+      "finance": 0.80,
+      "healthcare": 0.70,
+      "engineering": 0.75,
+      "education": 0.65,
+      "hospitality": 0.60
+    },
+    "miami": {
+      "general": 0.85,
+      "technology": 0.80,
+      "finance": 0.85,
+      "healthcare": 0.90,
+      "engineering": 0.85,
+      "education": 0.85,
+      "hospitality": 0.80
+    },
+    "mexico_city": {
+      "general": 0.30,
+      "technology": 0.35,
+      "finance": 0.35,
+      "healthcare": 0.25,
+      "engineering": 0.30,
+      "education": 0.25,
+      "hospitality": 0.20
+    },
+    "bangalore": {
+      "general": 0.25,
+      "technology": 0.35,
+      "finance": 0.30,
+      "healthcare": 0.20,
+      "engineering": 0.30,
+      "education": 0.20,
+      "hospitality": 0.15
     }
   },
   "notes": {

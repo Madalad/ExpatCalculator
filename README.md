@@ -32,6 +32,12 @@ This project helps expats and remote workers calculate and compare:
 - **Cape Town, South Africa** - Progressive tax with primary rebate system
 - **Bern, Switzerland** - Federal + Bern canton tax (slightly higher than Zurich)
 - **Bangkok, Thailand** - Low progressive tax, very affordable cost of living
+- **Lisbon, Portugal** - High progressive tax offset by NHR/IFICI incentive regimes (not modelled)
+- **Berlin, Germany** - Progressive tax (stepped approximation) with capped social contributions
+- **Dublin, Ireland** - Two-band income tax plus PRSI/USC; strong tech/finance hub
+- **Miami, USA** - Federal income tax only (no Florida state or city tax)
+- **Mexico City, Mexico** - Progressive ISR with low social contributions
+- **Bangalore, India** - New-regime progressive tax; low cost of living
 
 ## Supported Currencies
 - **USD**
@@ -94,20 +100,23 @@ This serves the same app at `http://localhost:8501`.
 
 The web UI provides:
 - **Overview tab** — sortable comparison table for all locations + bar charts
-- **Location Detail tab** — full tax and cost-of-living breakdown for a selected city, with the option to override the cost-of-living figures with your own (custom values apply across the whole app for that city)
+- **Location Detail tab** — full tax and cost-of-living breakdown for a selected city, with the option to override the cost-of-living figures with your own (custom values apply across the whole app for that city); an ℹ️ tooltip on the tax breakdown surfaces location-specific caveats (e.g. Portugal's NHR/IFICI regime)
 - **Investment tab** — project wealth growth from investing a share of your monthly surplus (choose risk profile, time horizon, expected annual salary growth, and cost-of-living inflation), with capital gains tax applied on sale and a cross-location comparison of final wealth
 
 Adjust income, currency, and lifestyle in the sidebar; the UI updates instantly. Optionally enable **Salary Normalisation** to scale the income for each location by typical pay for your industry — the income you enter is treated as your salary in the chosen base location, and a Gross Income column appears in the overview table.
 
 <br>
 
-![Overview table and charts](img/1.1.PNG)
+![Overview — comparison table across all locations](img/2.1.PNG)
 <br>
 
-![Annual surplus chart](img/1.2.PNG)
+![Overview — take-home vs cost of living, and annual surplus charts](img/2.2.PNG)
 <br>
 
-![Location detail breakdown](img/1.3.PNG)
+![Location Detail — surplus, tax breakdown, and cost-of-living breakdown](img/2.3.PNG)
+<br>
+
+![Investment — wealth-growth projection and final wealth by location](img/2.4.PNG)
 <br>
 
 ---
@@ -152,7 +161,7 @@ print_tax_result(result, col)
 ```python
 locations = calc.get_available_locations()
 print(locations)
-# Output: ['london', 'new_york', 'hong_kong', 'chicago', 'dubai', 'zurich', 'tokyo', 'singapore', 'toronto', 'sydney', 'amsterdam', 'cape_town', 'bern', 'bangkok']
+# Output: ['london', 'new_york', 'hong_kong', 'chicago', 'dubai', 'zurich', 'tokyo', 'singapore', 'toronto', 'sydney', 'amsterdam', 'cape_town', 'bern', 'bangkok', 'lisbon', 'berlin', 'dublin', 'miami', 'mexico_city', 'bangalore']
 ```
 
 #### Compare All Locations
@@ -277,6 +286,41 @@ For a $100,000 annual income with medium lifestyle:
 - Standard deductions (personal allowance, employment expense deduction) not modelled — rates shown slightly high
 - Social Security Fund 5% capped at B9,000/year — negligible for high earners, not modelled
 - **No capital gains tax** on Thai Stock Exchange; foreign-sourced gains generally 0% for non-residents
+
+### Portugal (Lisbon)
+- Progressive IRS income tax: 13.25% → 48% (9 brackets) + employee Social Security 11%
+- Personal tax credits and the NHR/IFICI incentive regimes (which sharply reduce tax for qualifying new residents) are not modelled
+- Solidarity surcharge (2.5% over €80k, 5% over €250k) not modelled
+- Capital gains on securities: flat 28%
+
+### Germany (Berlin)
+- Income tax is a continuous formula; approximated with fine-grained brackets that track the official 2024 tariff to within ~3%
+- Employee social contributions modelled with their 2024 contribution ceilings: ~20.55% up to €62,100 (health/care ceiling), then pension + unemployment only (~10.6%) up to €90,600, and 0% above
+- Solidarity surcharge applies only to top earners since 2021 (not modelled)
+- Investment income: Abgeltungsteuer ~26.4% (25% + solidarity; church tax excluded)
+
+### Ireland (Dublin)
+- Two-band income tax: 20% up to €42,000, 40% above (single)
+- PRSI (4%) + Universal Social Charge approximated together as ~8% social contributions
+- Personal/employee tax credits (~€3,750) reduce actual liability and are not modelled
+- Capital gains tax: 33%
+
+### United States (Miami)
+- Federal progressive tax only (10% → 37%) — **no Florida state or city income tax**
+- Take-home is notably higher than New York or Chicago as a result
+- Social Security/Medicare (7.65%) applies but is not modelled (consistent with other US entries)
+- Capital gains: 15% federal long-term, no state tax
+
+### Mexico (Mexico City)
+- Progressive ISR income tax: ~1.9% → 35% (11 brackets)
+- Employee IMSS social contributions are low (~2-3%, capped) — approximated at 3%
+- Capital gains on listed shares: flat 10% for residents
+
+### India (Bangalore)
+- New-regime progressive income tax 2024-25: 0% → 5% → 10% → 15% → 20% → 30%
+- 4% cess, high-income surcharge, and the standard deduction (₹75,000) not modelled — rates shown slightly high
+- EPF (12% of basic pay, ~half of gross) approximated at 5% of gross
+- Long-term capital gains on equity: 12.5%
 
 ## Class Reference
 

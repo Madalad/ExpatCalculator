@@ -501,6 +501,112 @@
       ],
       "capital_gains_tax_rate": 0.0,
       "notes": "Personal income tax 2024. Standard deductions (personal allowance B60,000, employment expense deduction up to B100,000) not modelled — effective rates shown are slightly higher than actual. Social Security Fund contribution 5% capped at B9,000/year — negligible for high earners, not modelled. No capital gains tax on Thai Stock Exchange; foreign-sourced capital gains complex but generally 0% for non-residents."
+    },
+    "lisbon": {
+      "name": "Lisbon, Portugal",
+      "currency": "EUR",
+      "exchange_rate_usd": 0.92,
+      "income_tax_brackets": [
+        {"min": 0, "max": 7703, "rate": 0.1325, "description": "IRS 2024"},
+        {"min": 7703, "max": 11623, "rate": 0.18, "description": "IRS 2024"},
+        {"min": 11623, "max": 16472, "rate": 0.23, "description": "IRS 2024"},
+        {"min": 16472, "max": 21321, "rate": 0.26, "description": "IRS 2024"},
+        {"min": 21321, "max": 27146, "rate": 0.3275, "description": "IRS 2024"},
+        {"min": 27146, "max": 39791, "rate": 0.37, "description": "IRS 2024"},
+        {"min": 39791, "max": 51997, "rate": 0.435, "description": "IRS 2024"},
+        {"min": 51997, "max": 81199, "rate": 0.45, "description": "IRS 2024"},
+        {"min": 81199, "max": null, "rate": 0.48, "description": "IRS 2024 (top rate)"}
+      ],
+      "social_insurance_rate": 0.11,
+      "capital_gains_tax_rate": 0.28,
+      "notes": "IRS 2024 progressive income tax + employee Social Security 11%. Personal tax credits and the NHR/IFICI incentive regimes (which can sharply reduce tax for qualifying new residents) are not modelled. Solidarity surcharge (2.5% over EUR 80k, 5% over EUR 250k) not modelled. Capital gains on securities taxed at a flat 28%."
+    },
+    "berlin": {
+      "name": "Berlin, Germany",
+      "currency": "EUR",
+      "exchange_rate_usd": 0.92,
+      "income_tax_brackets": [
+        {"min": 0, "max": 11604, "rate": 0.0, "description": "2024 (basic allowance)"},
+        {"min": 11604, "max": 17005, "rate": 0.19, "description": "2024 first progressive zone (avg marginal)"},
+        {"min": 17005, "max": 30000, "rate": 0.27, "description": "2024 second progressive zone (avg marginal)"},
+        {"min": 30000, "max": 45000, "rate": 0.32, "description": "2024 second progressive zone (avg marginal)"},
+        {"min": 45000, "max": 66760, "rate": 0.38, "description": "2024 second progressive zone (avg marginal)"},
+        {"min": 66760, "max": 277825, "rate": 0.42, "description": "2024"},
+        {"min": 277825, "max": null, "rate": 0.45, "description": "2024 (Reichensteuer top rate)"}
+      ],
+      "social_insurance_brackets": [
+        {"min": 0, "max": 62100, "rate": 0.2055, "description": "Pension+unemployment+health+care, under all 2024 ceilings"},
+        {"min": 62100, "max": 90600, "rate": 0.106, "description": "Pension+unemployment only (above health/care ceiling)"},
+        {"min": 90600, "max": null, "rate": 0.0, "description": "Above all 2024 contribution ceilings"}
+      ],
+      "capital_gains_tax_rate": 0.26,
+      "notes": "Germany's income tax is a continuous formula, approximated here with fine-grained brackets (within ~3% of the official 2024 tariff). Employee social contributions are modelled with their 2024 contribution ceilings: ~20.55% up to EUR 62,100 (health/care ceiling), then pension+unemployment only (~10.6%) up to EUR 90,600, and 0% above. Solidarity surcharge applies only to top earners since 2021 (not modelled). Investment income taxed via Abgeltungsteuer 25% + solidarity ~26.4% (church tax excluded)."
+    },
+    "dublin": {
+      "name": "Dublin, Ireland",
+      "currency": "EUR",
+      "exchange_rate_usd": 0.92,
+      "income_tax_brackets": [
+        {"min": 0, "max": 42000, "rate": 0.20, "description": "2024 standard rate band (single)"},
+        {"min": 42000, "max": null, "rate": 0.40, "description": "2024 higher rate"}
+      ],
+      "social_insurance_rate": 0.08,
+      "capital_gains_tax_rate": 0.33,
+      "notes": "Income tax 2024 (single, standard rate band EUR 42,000). PRSI 4% plus Universal Social Charge (progressive ~0.5-8%) approximated together as ~8% social contributions. Personal and employee tax credits (~EUR 3,750 combined) reduce actual liability and are not modelled (effective rates shown are higher than actual). Capital gains tax 33%."
+    },
+    "miami": {
+      "name": "Miami, USA",
+      "currency": "USD",
+      "exchange_rate_usd": 1.0,
+      "federal_income_tax_brackets": [
+        {"min": 0, "max": 11000, "rate": 0.10, "description": "Single filer (2024)"},
+        {"min": 11000, "max": 44725, "rate": 0.12, "description": "Single filer"},
+        {"min": 44725, "max": 95375, "rate": 0.22, "description": "Single filer"},
+        {"min": 95375, "max": 182100, "rate": 0.24, "description": "Single filer"},
+        {"min": 182100, "max": 231250, "rate": 0.32, "description": "Single filer"},
+        {"min": 231250, "max": 578125, "rate": 0.35, "description": "Single filer"},
+        {"min": 578125, "max": null, "rate": 0.37, "description": "Single filer"}
+      ],
+      "capital_gains_tax_rate": 0.15,
+      "long_term_capital_gains_rate": 0.15,
+      "notes": "Florida has NO state or city income tax — federal income tax only, making take-home notably higher than New York or Chicago. Social Security/Medicare (7.65%) applies but is not modelled, consistent with the other US city entries. Capital gains: 15% federal long-term rate, no state tax."
+    },
+    "mexico_city": {
+      "name": "Mexico City, Mexico",
+      "currency": "MXN",
+      "exchange_rate_usd": 17.5,
+      "income_tax_brackets": [
+        {"min": 0, "max": 8952, "rate": 0.0192, "description": "ISR 2024"},
+        {"min": 8952, "max": 75984, "rate": 0.064, "description": "ISR 2024"},
+        {"min": 75984, "max": 133536, "rate": 0.1088, "description": "ISR 2024"},
+        {"min": 133536, "max": 155229, "rate": 0.16, "description": "ISR 2024"},
+        {"min": 155229, "max": 185852, "rate": 0.1792, "description": "ISR 2024"},
+        {"min": 185852, "max": 374837, "rate": 0.2136, "description": "ISR 2024"},
+        {"min": 374837, "max": 590795, "rate": 0.2352, "description": "ISR 2024"},
+        {"min": 590795, "max": 1127926, "rate": 0.30, "description": "ISR 2024"},
+        {"min": 1127926, "max": 1503902, "rate": 0.32, "description": "ISR 2024"},
+        {"min": 1503902, "max": 4511707, "rate": 0.34, "description": "ISR 2024"},
+        {"min": 4511707, "max": null, "rate": 0.35, "description": "ISR 2024 (top rate)"}
+      ],
+      "social_insurance_rate": 0.03,
+      "capital_gains_tax_rate": 0.10,
+      "notes": "ISR 2024 progressive income tax. Employee IMSS social security contributions are low (~2-3%, capped) — approximated at 3%. Employment subsidy for low earners not modelled. Capital gains on listed shares taxed at a flat 10% for residents."
+    },
+    "bangalore": {
+      "name": "Bangalore, India",
+      "currency": "INR",
+      "exchange_rate_usd": 84.0,
+      "income_tax_brackets": [
+        {"min": 0, "max": 300000, "rate": 0.0, "description": "New regime 2024-25"},
+        {"min": 300000, "max": 700000, "rate": 0.05, "description": "New regime 2024-25"},
+        {"min": 700000, "max": 1000000, "rate": 0.10, "description": "New regime 2024-25"},
+        {"min": 1000000, "max": 1200000, "rate": 0.15, "description": "New regime 2024-25"},
+        {"min": 1200000, "max": 1500000, "rate": 0.20, "description": "New regime 2024-25"},
+        {"min": 1500000, "max": null, "rate": 0.30, "description": "New regime 2024-25 (top rate)"}
+      ],
+      "social_insurance_rate": 0.05,
+      "capital_gains_tax_rate": 0.125,
+      "notes": "Income tax under the default new regime 2024-25. The 4% health & education cess and high-income surcharge are not modelled; the standard deduction (INR 75,000) is not modelled (effective rates shown are slightly higher than actual). EPF employee contribution is 12% of basic pay (~half of gross); approximated at 5% of gross. Long-term capital gains on equity taxed at 12.5%."
     }
   },
   "notes": {

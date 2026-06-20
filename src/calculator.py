@@ -153,7 +153,15 @@ class TaxCalculator:
             )
             social_contributions += ni_tax
 
-        # Social insurance/contributions (other countries)
+        # Capped/progressive social contributions (e.g. Germany's contribution ceilings)
+        if "social_insurance_brackets" in loc_data:
+            si_tax, _ = self.calculate_tax_on_brackets(
+                annual_income_local,
+                loc_data["social_insurance_brackets"]
+            )
+            social_contributions += si_tax
+
+        # Social insurance/contributions (flat rate, other countries)
         if "social_insurance_rate" in loc_data:
             social_contributions += annual_income_local * loc_data["social_insurance_rate"]
 
